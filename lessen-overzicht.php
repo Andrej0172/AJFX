@@ -1,16 +1,22 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "lessen";
+// Database gegevens
+$servername = "localhost";   // Server waar de database draait
+$username = "root";          // Database gebruikersnaam
+$password = "";              // Database wachtwoord
+$dbname = "lessen";          // Naam van de database
 
+// Maak verbinding met de database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+// Controleer of de verbinding gelukt is
 if ($conn->connect_error) {
     die("Connectie mislukt: " . $conn->connect_error);
 }
 
+// alle lessen op halen
 $sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
+
+// uitvoeren
 $result = $conn->query($sql);
 ?>
 
@@ -19,16 +25,22 @@ $result = $conn->query($sql);
 <head>
 <meta charset="UTF-8">
 <title>Lessen Overzicht</title>
+
+<!-- link naar css -->
 <link rel="stylesheet" href="css/lessen-overzicht.css">
 </head>
 
 <body>
 
+
 <h1>Lessen Overzicht</h1>
 
+<!-- Tabel -->
 <table>
+
 <thead>
 <tr>
+<!-- Kolom -->
 <th>Les</th>
 <th>Trainer</th>
 <th>Locatie</th>
@@ -40,17 +52,28 @@ $result = $conn->query($sql);
 <tbody>
 
 <?php
+// Controlee
 if ($result->num_rows > 0) {
+
+    // Loop door elke rij van de resultaten
     while($row = $result->fetch_assoc()) {
+
+        // Nieuwe rij
         echo "<tr>";
+
+        // Gegevens 
         echo "<td>" . $row["lessen"] . "</td>";
         echo "<td>" . $row["trainer"] . "</td>";
         echo "<td>" . $row["locatie"] . "</td>";
         echo "<td>" . $row["datum"] . "</td>";
         echo "<td>" . $row["tijd"] . "</td>";
+
         echo "</tr>";
     }
+
 } else {
+
+    // Als er geen lessen zijn gevonden
     echo "<tr><td colspan='5'>Geen lessen gevonden</td></tr>";
 }
 ?>
@@ -62,5 +85,6 @@ if ($result->num_rows > 0) {
 </html>
 
 <?php
+// Sluit de database verbinding
 $conn->close();
 ?>
