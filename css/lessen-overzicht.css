@@ -1,15 +1,25 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
     font-family: Arial, sans-serif;
-    background-color:#f4f4f4;
-    padding:40px;
+    background:#f4f4f4;
+    padding:20px;
 }
 
 h1{
     text-align:center;
+    margin-bottom:20px;
 }
 
+/* TABEL */
+
 table{
-    width:80%;
+    width:100%;
+    max-width:1000px;
     margin:auto;
     border-collapse:collapse;
     background:white;
@@ -28,4 +38,60 @@ th{
 
 tr:nth-child(even){
     background:#f2f2f2;
+}
+
+/* TABLET */
+
+@media (max-width:768px){
+
+    th, td{
+        padding:10px;
+        font-size:14px;
+    }
+
+}
+
+/* TELEFOON */
+
+@media (max-width:600px){
+
+    table, thead, tbody, th, td, tr{
+        display:block;
+        width:100%;
+    }
+
+    thead{
+        display:none;
+    }
+
+    tr{
+        background:white;
+        margin-bottom:15px;
+        border-radius:8px;
+        box-shadow:0 2px 5px rgba(0,0,0,0.1);
+        padding:10px;
+    }
+
+    td{
+        text-align:left;
+        padding:8px;
+        border:none;
+        border-bottom:1px solid #eee;
+        position:relative;
+        padding-left:50%;
+    }
+
+    td:before{
+        position:absolute;
+        left:10px;
+        width:45%;
+        font-weight:bold;
+    }
+
+    td:nth-of-type(1):before{ content:"Les"; }
+    td:nth-of-type(2):before{ content:"Trainer"; }
+    td:nth-of-type(3):before{ content:"Locatie"; }
+    td:nth-of-type(4):before{ content:"Datum"; }
+    td:nth-of-type(5):before{ content:"Tijd"; }
+
 }
