@@ -14,8 +14,21 @@ if ($conn->connect_error) {
 }
 
 // database  op halen
-$sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
+if (isset($_GET['zoek']) && $_GET['zoek'] != "") {
 
+    $zoek = $_GET['zoek'];
+
+    $sql = "SELECT * FROM lessenoverzicht 
+            WHERE lessen LIKE '%$zoek%' 
+            OR trainer LIKE '%$zoek%' 
+            OR locatie LIKE '%$zoek%'
+            ORDER BY datum, tijd";
+
+} else {
+
+    $sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
+
+}
 
 $result = $conn->query($sql);
 ?>
@@ -35,7 +48,11 @@ $result = $conn->query($sql);
     <!--header van pagina-->
     <?php include 'header.php'; ?>
 
-    
+    <!-- zoek balk -->
+    <form method="GET">
+        <input type="text" name="zoek" placeholder="Zoek een les...">
+        <button type="submit">Zoeken</button>
+    </form>
 
 
 
@@ -73,7 +90,7 @@ $result = $conn->query($sql);
             } else {
 
                 // unhappy
-                echo "<tr><td colspan='5'>Geen lessen gevonden</td></tr>";
+                echo "<tr><td colspan='5'>Geen les gevonden</td></tr>";
             }
 
 
@@ -92,16 +109,24 @@ $result = $conn->query($sql);
         <?php
         $result = $conn->query($sql);
 
-        while ($row = $result->fetch_assoc()) {
+        if ($result->num_rows > 0) {
 
-            echo "<div class='les-card'>";
+            while ($row = $result->fetch_assoc()) {
 
-            echo "<h3>" . $row["lessen"] . "</h3>";
-            echo "<p><b>Trainer:</b> " . $row["trainer"] . "</p>";
-            echo "<p><b>Datum:</b> " . date("d-m-Y", strtotime($row["datum"])) . "</p>";
-            echo "<p><b>Tijd:</b> " . date("H:i", strtotime($row["tijd"])) . "</p>";
+                echo "<div class='les-card'>";
 
-            echo "</div>";
+                echo "<h3>" . $row["lessen"] . "</h3>";
+                echo "<p><b>Trainer:</b> " . $row["trainer"] . "</p>";
+                echo "<p><b>Datum:</b> " . date("d-m-Y", strtotime($row["datum"])) . "</p>";
+                echo "<p><b>Tijd:</b> " . date("H:i", strtotime($row["tijd"])) . "</p>";
+
+                echo "</div>";
+            }
+
+        } else {
+
+            echo "<p>Geen les gevonden</p>";
+
         }
         ?>
 
