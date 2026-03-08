@@ -31,9 +31,10 @@ $result = $conn->query($sql);
 </head>
 
 <body>
+<!--header van pagina-->
+<?php include 'header.php'; ?>
 
 
-<h1>Lessen</h1>
 
 
 <table>
@@ -82,7 +83,7 @@ if ($result->num_rows > 0) {
 </table>
 <!--alle lessen-->
 
-<h2>Alle lessen</h2>
+<h1>Alle lessen</h1>
 
 <div class="lessen-container">
 
