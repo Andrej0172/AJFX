@@ -13,10 +13,10 @@ if ($conn->connect_error) {
     die("Connectie mislukt: " . $conn->connect_error);
 }
 
-// alle lessen op halen
+// database  op halen
 $sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
 
-// uitvoeren
+
 $result = $conn->query($sql);
 ?>
 
@@ -35,12 +35,12 @@ $result = $conn->query($sql);
 
 <h1>Lessen</h1>
 
-<!-- Tabel -->
+
 <table>
 
 <thead>
 <tr>
-<!-- Kolom -->
+
 <th>Les</th>
 <th>Trainer</th>
 <th>Locatie</th>
@@ -52,16 +52,12 @@ $result = $conn->query($sql);
 <tbody>
 
 <?php
-// Controlee
+// Controle
 if ($result->num_rows > 0) {
 
-    // Loop door elke rij van de resultaten
     while($row = $result->fetch_assoc()) {
 
-        // Nieuwe rij
         echo "<tr>";
-
-        // Gegevens 
         echo "<td>" . $row["lessen"] . "</td>";
         echo "<td>" . $row["trainer"] . "</td>";
         echo "<td>" . $row["locatie"] . "</td>";
@@ -73,7 +69,7 @@ if ($result->num_rows > 0) {
 
 } else {
 
-    // Als er geen lessen zijn gevonden
+    // unhappy
     echo "<tr><td colspan='5'>Geen lessen gevonden</td></tr>";
 }
 
