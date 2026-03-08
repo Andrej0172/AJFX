@@ -22,5 +22,5 @@ CREATE TABLE bookings (
 
 INSERT INTO lessons (title, description, price) VALUES
 ('Yoga voor beginners', 'Een introductie tot yoga.', 25.00),
-('Piano lessen', 'Leer piano spelen van een professionele docent.', 40.00),
-('Spaanse les', 'Leer Spaans op een interactieve manier.', 30.00);
+('Fitness', 'Verbeter je kracht en conditie met een volledige fitnesssessie.', 25.00),
+('Pilates', 'Focus op core-spieren en houding met Pilates-oefeningen.', 22.00);

@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
-
+<link rel="stylesheet" href="book.css">
 <h1>Boek: <?= htmlspecialchars($lesson['title']) ?></h1>
 
 <form method="post">
