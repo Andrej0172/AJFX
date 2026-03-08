@@ -1,9 +1,9 @@
 <?php
 // Database gegevens
-$servername = "localhost";   
-$username = "root";          
-$password = "";              
-$dbname = "lessen";   
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "lessen";
 
 // Maak verbinding met de database
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -22,90 +22,92 @@ $result = $conn->query($sql);
 
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-<meta charset="UTF-8">
-<title>Lessen Overzicht</title>
 
-<!-- link naar css -->
-<link rel="stylesheet" href="css/lessen-overzicht.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Lessen Overzicht</title>
+
+    <!-- link naar css -->
+    <link rel="stylesheet" href="css/lessen-overzicht.css">
 </head>
 
 <body>
-<!--header van pagina-->
-<?php include 'header.php'; ?>
+    <!--header van pagina-->
+    <?php include 'header.php'; ?>
 
 
 
 
-<table>
+    <table>
 
-<thead>
-<tr>
+        <thead>
+            <tr>
 
-<th>Les</th>
-<th>Trainer</th>
-<th>Locatie</th>
-<th>Datum</th>
-<th>Tijd</th>
-</tr>
-</thead>
+                <th>Les</th>
+                <th>Trainer</th>
+                <th>Locatie</th>
+                <th>Datum</th>
+                <th>Tijd</th>
+            </tr>
+        </thead>
 
-<tbody>
+        <tbody>
 
-<?php
-// Controle
-if ($result->num_rows > 0) {
+            <?php
+            // Controle
+            if ($result->num_rows > 0) {
 
-    while($row = $result->fetch_assoc()) {
+                while ($row = $result->fetch_assoc()) {
 
-        echo "<tr>";
-        echo "<td>" . $row["lessen"] . "</td>";
-        echo "<td>" . $row["trainer"] . "</td>";
-        echo "<td>" . $row["locatie"] . "</td>";
-        echo "<td>" . $row["datum"] . "</td>";
-        echo "<td>" . $row["tijd"] . "</td>";
+                    echo "<tr>";
+                    echo "<td>" . $row["lessen"] . "</td>";
+                    echo "<td>" . $row["trainer"] . "</td>";
+                    echo "<td>" . $row["locatie"] . "</td>";
+                    echo "<td>" . $row["datum"] . "</td>";
+                    echo "<td>" . $row["tijd"] . "</td>";
 
-        echo "</tr>";
-    }
+                    echo "</tr>";
+                }
 
-} else {
+            } else {
 
-    // unhappy
-    echo "<tr><td colspan='5'>Geen lessen gevonden</td></tr>";
-}
-
-
-    
-?>
+                // unhappy
+                echo "<tr><td colspan='5'>Geen lessen gevonden</td></tr>";
+            }
 
 
-</tbody>
-</table>
-<!--alle lessen-->
 
-<h1>Alle lessen</h1>
+            ?>
 
-<div class="lessen-container">
 
-<?php
-$result = $conn->query($sql);
+        </tbody>
+    </table>
+    <!--alle lessen-->
 
-while($row = $result->fetch_assoc()) {
+    <h1>Alle lessen</h1>
 
-echo "<div class='les-card'>";
+    <div class="lessen-container">
 
-echo "<h3>".$row["lessen"]."</h3>";
-echo "<p><b>Trainer:</b> ".$row["trainer"]."</p>";
-echo "<p><b>Datum:</b> ".date("d-m-Y", strtotime($row["datum"]))."</p>";
-echo "<p><b>Tijd:</b> ".date("H:i", strtotime($row["tijd"]))."</p>";
+        <?php
+        $result = $conn->query($sql);
 
-echo "</div>";
-}
-?>
+        while ($row = $result->fetch_assoc()) {
 
-</div>
+            echo "<div class='les-card'>";
+
+            echo "<h3>" . $row["lessen"] . "</h3>";
+            echo "<p><b>Trainer:</b> " . $row["trainer"] . "</p>";
+            echo "<p><b>Datum:</b> " . date("d-m-Y", strtotime($row["datum"])) . "</p>";
+            echo "<p><b>Tijd:</b> " . date("H:i", strtotime($row["tijd"])) . "</p>";
+
+            echo "</div>";
+        }
+        ?>
+
+    </div>
 
 </body>
+
 </html>
 
 <?php
