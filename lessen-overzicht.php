@@ -1,10 +1,10 @@
 <?php
 // Database gegevens
-$servername = "localhost";   // Server waar de database draait
-$username = "root";          // Database gebruikersnaam
-$password = "";              // Database wachtwoord
-$dbname = "lessen";          // Naam van de database
-
+$servername = "localhost";   
+$username = "root";          
+$password = "";              
+$dbname = "lessen";   
+       
 // Maak verbinding met de database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
