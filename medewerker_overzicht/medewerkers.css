@@ -1,0 +1,214 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    background: #fff;
+    color: #111;
+}
+
+/* Header */
+header {
+    border-bottom: 1px solid #ccc;
+    padding: 0 32px;
+}
+
+.header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.header-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.header-titel {
+    font-size: 26px;
+    font-weight: 600;
+    color: #111;
+}
+
+.header-acties {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Knoppen */
+.knop-primair {
+    padding: 9px 18px;
+    border: 1px solid #111;
+    border-radius: 6px;
+    background: #111;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.knop-secundair {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+}
+
+/* Main */
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 32px;
+}
+
+.aantal-tekst {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 12px;
+}
+
+/* Tabel */
+.tabel-wrapper {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+thead th.rechts {
+    text-align: right;
+}
+
+tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+tbody tr:hover td {
+    background: #f0f0f0;
+    transition: background 0.15s;
+}
+
+tbody td {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+tbody td.rechts {
+    text-align: right;
+}
+
+/* Naam cel met avatar */
+.naam-cel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    flex-shrink: 0;
+}
+
+.naam {
+    font-weight: 500;
+    color: #111;
+}
+
+/* Badge */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #eee;
+    color: #555;
+}
+
+/* E-mail link */
+.email-link {
+    color: #111;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.email-link:hover {
+    text-decoration: underline;
+}
+
+/* Foutmelding */
+.fout-blok {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-top: 8px;
+}
+
+.fout-icoon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.fout-tekst {
+    font-size: 15px;
+    color: #111;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
