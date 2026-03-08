@@ -7,7 +7,7 @@
 <nav>
 <ul>
 <li><a href="index.php">Home</a></li>
-<li><a href="lessen.php">Lessen Overzicht</a></li>
+<li><a href="lessen-overzicht.php">Lessen Overzicht</a></li>
 <li><a href="trainers.php">Trainers</a></li>
 <li><a href="contact.php">Contact</a></li>
 </ul>
