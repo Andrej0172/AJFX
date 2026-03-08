@@ -16,12 +16,14 @@ if ($conn->connect_error) {
 // database  op halen
 if (isset($_GET['zoek']) && $_GET['zoek'] != "") {
 
-    $zoek = $_GET['zoek'];
+
+
+    $zoek = strtolower($_GET['zoek']);
 
     $sql = "SELECT * FROM lessenoverzicht 
-            WHERE lessen LIKE '%$zoek%' 
-            OR trainer LIKE '%$zoek%' 
-            OR locatie LIKE '%$zoek%'
+            WHERE LOWER(lessen) LIKE '%$zoek%' 
+            OR LOWER(trainer) LIKE '%$zoek%' 
+            OR LOWER(locatie) LIKE '%$zoek%'
             ORDER BY datum, tijd";
 
 } else {
