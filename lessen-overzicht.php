@@ -4,7 +4,7 @@ $servername = "localhost";
 $username = "root";          
 $password = "";              
 $dbname = "lessen";   
-       
+
 // Maak verbinding met de database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -33,7 +33,7 @@ $result = $conn->query($sql);
 <body>
 
 
-<h1>Lessen Overzicht</h1>
+<h1>Lessen</h1>
 
 <!-- Tabel -->
 <table>
@@ -76,10 +76,35 @@ if ($result->num_rows > 0) {
     // Als er geen lessen zijn gevonden
     echo "<tr><td colspan='5'>Geen lessen gevonden</td></tr>";
 }
+
+
+    
 ?>
+
 
 </tbody>
 </table>
+<!--alle lessen-->
+
+<div class="lessen-container">
+
+<?php
+$result = $conn->query($sql);
+
+while($row = $result->fetch_assoc()) {
+
+echo "<div class='les-card'>";
+
+echo "<h3>".$row["lessen"]."</h3>";
+echo "<p><b>Trainer:</b> ".$row["trainer"]."</p>";
+echo "<p><b>Datum:</b> ".date("d-m-Y", strtotime($row["datum"]))."</p>";
+echo "<p><b>Tijd:</b> ".date("H:i", strtotime($row["tijd"]))."</p>";
+
+echo "</div>";
+}
+?>
+
+</div>
 
 </body>
 </html>
