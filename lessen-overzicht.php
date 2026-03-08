@@ -8,7 +8,7 @@ $dbname = "lessen";
 // Maak verbinding met de database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Controleer of de verbinding gelukt is
+// verbinding controle
 if ($conn->connect_error) {
     die("Connectie mislukt: " . $conn->connect_error);
 }
@@ -40,12 +40,12 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <title>Lessen Overzicht</title>
 
-    <!-- link naar css -->
+    <!-- css -->
     <link rel="stylesheet" href="css/lessen-overzicht.css">
 </head>
 
 <body>
-    <!--header van pagina-->
+    <!--header-->
     <?php include 'header.php'; ?>
 
     <!-- zoek balk -->
