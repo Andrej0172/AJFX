@@ -119,9 +119,7 @@ $result = $conn->query($sql);
 
                 echo "<h3>" . $row["lessen"] . "</h3>";
                 echo "<p><b>Trainer:</b> " . $row["trainer"] . "</p>";
-                echo "<p><b>Datum:</b> " . date("d-m-Y", strtotime($row["datum"])) . "</p>";
-                echo "<p><b>Tijd:</b> " . date("H:i", strtotime($row["tijd"])) . "</p>";
-
+ 
                 echo "</div>";
             }
 
