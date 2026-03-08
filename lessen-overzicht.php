@@ -56,6 +56,7 @@ $result = $conn->query($sql);
         <button type="submit">Zoeken</button>
     </form>
 
+    <h1>Ingepland</h1>
 
 
     <table>
