@@ -82,6 +82,8 @@ if ($result->num_rows > 0) {
 </table>
 <!--alle lessen-->
 
+<h2>Alle lessen</h2>
+
 <div class="lessen-container">
 
 <?php
