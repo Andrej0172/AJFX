@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJFX - Lessen Management Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Error Modal (hidden by default) -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">⚠️</div>
+            <h2>Pagina Tijdelijk Niet Beschikbaar</h2>
+            <p>De homepagina is tijdelijk niet beschikbaar. Probeer het later opnieuw.</p>
+            <button onclick="closeErrorModal()" class="btn-primary">Sluiten</button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">AJFX</span>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#lessen" class="nav-link">Lessen</a></li>
+                <li><a href="#reserveringen" class="nav-link">Reserveringen</a></li>
+                <li><a href="../account/login.php" class="nav-link">Account</a></li>
+                <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Lessen Management Platform</h1>
+            <p class="hero-subtitle">
+                Beheer lessen, reserveringen, accounts en medewerkers vanaf één centrale plek.
+            </p>
+            <div class="hero-cta">
+                <button onclick="navigateTo('#lessen')" class="btn-primary">
+                    Bekijk Lessen
+                </button>
+                <a href="../account/login.php" class="btn-secondary" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none;">
+                    Mijn Account
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-header">
+                <h2 class="section-title">Alle Functionaliteiten</h2>
+                <p class="section-subtitle">Ontdek de mogelijkheden van AJFX</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Informatie Epic -->
+                <div class="feature-epic">
+                    <div class="epic-header">
+                        <span class="epic-icon">📚</span>
+                        <h3>Informatie & Lessen</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item" onclick="navigateTo('#home-pagina')">
+                            <div class="feature-content">
+                                <strong>Home Pagina </strong>
+                                <small>Deze pagina die u nu bekijkt</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#aanbiedingen')">
+                            <div class="feature-content">
+                                <strong>Aanbiedingen Lessen Pagina </strong>
+                                <small>Ontdek ons lesaanbod</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#zoeken')">
+                            <div class="feature-content">
+                                <strong>Zoeken op Lesnaam</strong>
+                                <small>Vind precies wat u zoekt</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#filteren')">
+                            <div class="feature-content">
+                                <strong>Les Filteren</strong>
+                                <small>Filter op criteria</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Account Registration Epic -->
+                <div class="feature-epic">
+                    <div class="epic-header">
+                        <span class="epic-icon">🔐</span>
+                        <h3>Account Registratie</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item" onclick="window.location.href='../account/login.php'">
+                            <div class="feature-content">
+                                <strong>Account Overzicht</strong>
+                                <small>Bekijk uw account gegevens</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#account-beheren')">
+                            <div class="feature-content">
+                                <strong>Account Beheren</strong>
+                                <small>Wijzig uw instellingen</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Medewerker Epic -->
+                <div class="feature-epic">
+                    <div class="epic-header">
+                        <span class="epic-icon">👥</span>
+                        <h3>Medewerker Registratie</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item" onclick="navigateTo('#medewerker-overzicht')">
+                            <div class="feature-content">
+                                <strong>Medewerker Overzicht</strong>
+                                <small>Overzicht van alle medewerkers</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#medewerker-beheer')">
+                            <div class="feature-content">
+                                <strong>Medewerker Beheer</strong>
+                                <small>Voeg toe of wijzig medewerkers</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Leden Epic -->
+                <div class="feature-epic">
+                    <div class="epic-header">
+                        <span class="epic-icon">🎓</span>
+                        <h3>Lid Registratie</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item" onclick="navigateTo('#leden-overzicht')">
+                            <div class="feature-content">
+                                <strong>Leden Overzicht</strong>
+                                <small>Alle leden in één oogopslag</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#lid-zoeken')">
+                            <div class="feature-content">
+                                <strong>Lid Achternaam Zoeken</strong>
+                                <small>Snel een lid vinden</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#leden-beheren')">
+                            <div class="feature-content">
+                                <strong>Leden Beheren</strong>
+                                <small>Voeg toe of wijzig leden</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Les Registratie Epic -->
+                <div class="feature-epic">
+                    <div class="epic-header">
+                        <span class="epic-icon">📖</span>
+                        <h3>Les Registratie</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item" onclick="navigateTo('#lessen-overzicht')">
+                            <div class="feature-content">
+                                <strong>Lessen Overzicht</strong>
+                                <small>Alle beschikbare lessen</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#les-beheren')">
+                            <div class="feature-content">
+                                <strong>Les Beheren</strong>
+                                <small>Lessen toevoegen of wijzigen</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Reservering Epic -->
+                <div class="feature-epic">
+                    <div class="epic-header">
+                        <span class="epic-icon">🎫</span>
+                        <h3>Reservering Registratie</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item" onclick="navigateTo('#reserveringen-overzicht')">
+                            <div class="feature-content">
+                                <strong>Reserveringen Overzicht</strong>
+                                <small>Bekijk alle reserveringen</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#reservering-beheren')">
+                            <div class="feature-content">
+                                <strong>Reservering Beheren</strong>
+                                <small>Wijzig reserveringen</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Management Dashboard Epic -->
+                <div class="feature-epic">
+                    <div class="epic-header">
+                        <span class="epic-icon">📊</span>
+                        <h3>Management Dashboard</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item" onclick="navigateTo('#dashboard')">
+                            <div class="feature-content">
+                                <strong>Dashboard Beheren</strong>
+                                <small>Overzicht van statistieken</small>
+                            </div>
+                        </li>
+                        <li class="feature-item" onclick="navigateTo('#geplande-lessen')">
+                            <div class="feature-content">
+                                <strong>Overzicht Geplande Lessen</strong>
+                                <small>Bekijk de planning</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <span class="logo-text">AJFX</span>
+                    </div>
+                    <p class="footer-description">
+                        Uw complete lessen management platform. Eenvoudig en betrouwbaar.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="#lessen">Lessen</a></li>
+                        <li><a href="#reserveringen">Reserveringen</a></li>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Account</h4>
+                    <ul class="footer-links">
+                        <li><a href="../account/login.php">Mijn Account</a></li>
+                        <li><a href="#leden-overzicht">Leden</a></li>
+                        <li><a href="#medewerker-overzicht">Medewerkers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#status">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AJFX. Alle rechten voorbehouden.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="loadingIndicator" class="loading-indicator">
+        <div class="spinner"></div>
+        <p>Laden...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
