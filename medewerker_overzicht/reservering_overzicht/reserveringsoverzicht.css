@@ -1,0 +1,175 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    background: #fff;
+    color: #111;
+}
+
+header {
+    border-bottom: 1px solid #ccc;
+    padding: 0 32px;
+}
+
+.header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.header-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.header-titel {
+    font-size: 26px;
+    font-weight: 600;
+    color: #111;
+}
+
+.header-acties {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.knop-secundair {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+}
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 32px;
+}
+
+.aantal-tekst {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 12px;
+}
+
+.tabel-wrapper {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+tbody tr:hover td {
+    background: #f0f0f0;
+    transition: background 0.15s;
+}
+
+tbody td {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.naam-cel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    flex-shrink: 0;
+}
+
+.naam {
+    font-weight: 500;
+    color: #111;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #eee;
+    color: #555;
+}
+
+.fout-blok {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #DC2626;
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin-top: 8px;
+}
+
+.fout-icoon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    color: #DC2626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.fout-tekst {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 500;
+    margin: 0;
+}
