@@ -32,11 +32,11 @@
                 <span></span>
             </button>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#lessen" class="nav-link">Lessen</a></li>
-                <li><a href="#reserveringen" class="nav-link">Reserveringen</a></li>
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="../lessen-overzicht.php" class="nav-link">Lessen</a></li>
+                <li><a href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php" class="nav-link">Reserveringen</a></li>
                 <li><a href="../account/login.php" class="nav-link">Account</a></li>
-                <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+                <li><a href="../medewerker_overzicht/medewerkers.php" class="nav-link">Medewerker overzicht</a></li>
             </ul>
         </div>
     </nav>
@@ -49,7 +49,7 @@
                 Beheer lessen, reserveringen, accounts en medewerkers vanaf één centrale plek.
             </p>
             <div class="hero-cta">
-                <button onclick="navigateTo('#lessen')" class="btn-primary">
+                <button onclick="window.location.href='../lessen-overzicht.php'" class="btn-primary">
                     Bekijk Lessen
                 </button>
                 <a href="../account/login.php" class="btn-secondary" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none;">
@@ -75,25 +75,25 @@
                         <h3>Informatie & Lessen</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="navigateTo('#home-pagina')">
+                        <li class="feature-item" onclick="window.location.href='index.html'">
                             <div class="feature-content">
-                                <strong>Home Pagina </strong>
+                                <strong>Home Pagina</strong>
                                 <small>Deze pagina die u nu bekijkt</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#aanbiedingen')">
+                        <li class="feature-item" onclick="window.location.href='../dbaanbiedingen.sql'">
                             <div class="feature-content">
-                                <strong>Aanbiedingen Lessen Pagina </strong>
+                                <strong>Aanbiedingen Lessen Pagina</strong>
                                 <small>Ontdek ons lesaanbod</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#zoeken')">
+                        <li class="feature-item" onclick="window.location.href='../lessen-overzicht.php'">
                             <div class="feature-content">
                                 <strong>Zoeken op Lesnaam</strong>
                                 <small>Vind precies wat u zoekt</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#filteren')">
+                        <li class="feature-item" onclick="window.location.href='../lessen-overzicht.php'">
                             <div class="feature-content">
                                 <strong>Les Filteren</strong>
                                 <small>Filter op criteria</small>
@@ -115,7 +115,7 @@
                                 <small>Bekijk uw account gegevens</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#account-beheren')">
+                        <li class="feature-item" onclick="window.location.href='../account/gegevens_wijzigen.php'">
                             <div class="feature-content">
                                 <strong>Account Beheren</strong>
                                 <small>Wijzig uw instellingen</small>
@@ -131,13 +131,13 @@
                         <h3>Medewerker Registratie</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="navigateTo('#medewerker-overzicht')">
+                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
                             <div class="feature-content">
                                 <strong>Medewerker Overzicht</strong>
                                 <small>Overzicht van alle medewerkers</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#medewerker-beheer')">
+                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
                             <div class="feature-content">
                                 <strong>Medewerker Beheer</strong>
                                 <small>Voeg toe of wijzig medewerkers</small>
@@ -153,19 +153,19 @@
                         <h3>Lid Registratie</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="navigateTo('#leden-overzicht')">
+                        <li class="feature-item" onclick="window.location.href='../database/leden.php'">
                             <div class="feature-content">
                                 <strong>Leden Overzicht</strong>
                                 <small>Alle leden in één oogopslag</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#lid-zoeken')">
+                        <li class="feature-item" onclick="window.location.href='../database/leden.php'">
                             <div class="feature-content">
                                 <strong>Lid Achternaam Zoeken</strong>
                                 <small>Snel een lid vinden</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#leden-beheren')">
+                        <li class="feature-item" onclick="window.location.href='../database/leden.php'">
                             <div class="feature-content">
                                 <strong>Leden Beheren</strong>
                                 <small>Voeg toe of wijzig leden</small>
@@ -181,13 +181,13 @@
                         <h3>Les Registratie</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="navigateTo('#lessen-overzicht')">
+                        <li class="feature-item" onclick="window.location.href='../lessen-overzicht.php'">
                             <div class="feature-content">
                                 <strong>Lessen Overzicht</strong>
                                 <small>Alle beschikbare lessen</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#les-beheren')">
+                        <li class="feature-item" onclick="window.location.href='../lessen-overzicht.php'">
                             <div class="feature-content">
                                 <strong>Les Beheren</strong>
                                 <small>Lessen toevoegen of wijzigen</small>
@@ -203,13 +203,13 @@
                         <h3>Reservering Registratie</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="navigateTo('#reserveringen-overzicht')">
+                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php'">
                             <div class="feature-content">
                                 <strong>Reserveringen Overzicht</strong>
                                 <small>Bekijk alle reserveringen</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#reservering-beheren')">
+                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php'">
                             <div class="feature-content">
                                 <strong>Reservering Beheren</strong>
                                 <small>Wijzig reserveringen</small>
@@ -225,13 +225,13 @@
                         <h3>Management Dashboard</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="navigateTo('#dashboard')">
+                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
                             <div class="feature-content">
                                 <strong>Dashboard Beheren</strong>
                                 <small>Overzicht van statistieken</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="navigateTo('#geplande-lessen')">
+                        <li class="feature-item" onclick="window.location.href='../lessen-overzicht.php'">
                             <div class="feature-content">
                                 <strong>Overzicht Geplande Lessen</strong>
                                 <small>Bekijk de planning</small>
@@ -258,25 +258,25 @@
                 <div class="footer-col">
                     <h4>Platform</h4>
                     <ul class="footer-links">
-                        <li><a href="#lessen">Lessen</a></li>
-                        <li><a href="#reserveringen">Reserveringen</a></li>
-                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="../lessen-overzicht.php">Lessen</a></li>
+                        <li><a href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php">Reserveringen</a></li>
+                        <li><a href="../medewerker_overzicht/medewerkers.php">Dashboard</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Account</h4>
                     <ul class="footer-links">
                         <li><a href="../account/login.php">Mijn Account</a></li>
-                        <li><a href="#leden-overzicht">Leden</a></li>
-                        <li><a href="#medewerker-overzicht">Medewerkers</a></li>
+                        <li><a href="../database/leden.php">Leden</a></li>
+                        <li><a href="../medewerker_overzicht/medewerkers.php">Medewerkers</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Support</h4>
                     <ul class="footer-links">
-                        <li><a href="#help">Help Center</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="#status">Status</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Status</a></li>
                     </ul>
                 </div>
             </div>
