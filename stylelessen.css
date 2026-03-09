@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #2e8b57;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+.container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 10px;
+}
+.lesson-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+.lesson-card:hover {
+    transform: scale(1.02);
+}
+.lesson-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #2e8b57;
+}
+.lesson-price {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.lesson-description {
+    margin-bottom: 15px;
+}
+.book-button {
+    background-color: #2e8b57;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.book-button:hover {
+    background-color: #246b45;
+}
+
+.foute-userstory{
+    color: red;
+    padding: auto;
+}
