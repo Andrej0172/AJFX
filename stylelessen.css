@@ -48,3 +48,8 @@ header {
 .book-button:hover {
     background-color: #246b45;
 }
+
+.foute-userstory{
+    color: red;
+    padding: auto;
+}

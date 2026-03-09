@@ -1,3 +1,4 @@
+Drop database if exists school_db;
 -- Maak een nieuwe database aan genaamd school_db
 CREATE DATABASE school_db;
 
