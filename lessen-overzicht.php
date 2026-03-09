@@ -47,8 +47,8 @@ $result = $conn->query($sql);
 </head>
 
 <body>
-    <!--header-->
-    <?php include 'header.php'; ?>
+
+
 
     <!-- zoek balk -->
     <form method="GET">
