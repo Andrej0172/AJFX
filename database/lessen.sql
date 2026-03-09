@@ -47,6 +47,7 @@ INSERT INTO lessenoverzicht
     ,locatie
     ,datum
     ,tijd
+    
 )
 VALUES 
 ('Bootcamp', 'Mike Jansen', 'Sportschool Utrecht', '2026-03-13', '09:00:00'),
