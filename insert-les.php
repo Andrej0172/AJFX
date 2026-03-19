@@ -25,10 +25,17 @@ VALUES ('$lessen', '$trainer', '$locatie', '$datum', '$tijd')";
 
 // uitvoeren
 if ($conn->query($sql) === TRUE) {
-    echo "Nieuwe les toegevoegd!";
+    header("Location: Alle-lessen.php?succes=1");
+exit();
 } else {
     echo "Fout: " . $conn->error;
 }
 
 $conn->close();
+?>
+
+<?php
+if (isset($_GET['succes'])) {
+    echo "<p style='color:green;'>Les succesvol toegevoegd!</p>";
+}
 ?>

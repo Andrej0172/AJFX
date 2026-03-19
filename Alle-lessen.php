@@ -41,8 +41,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Lessen Overzicht</title>
-
-    <!-- css -->
+     <!-- css -->
     <link rel="stylesheet" href="css/lessen-overzicht.css">
 </head>
 
@@ -53,6 +52,9 @@ $result = $conn->query($sql);
 <body>
 
     <h1>Alle lessen</h1>
+    <a href="insert-les.html">
+    <button>+ Nieuwe les toevoegen</button>
+    </a>
 
     <div class="lessen-container">
 
