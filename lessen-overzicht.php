@@ -105,37 +105,7 @@ $result = $conn->query($sql);
     </table>
     <!--alle lessen-->
 
-    <h1>Alle lessen</h1>
 
-    <div class="lessen-container">
-
-        <?php
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-
-            while ($row = $result->fetch_assoc()) {
-
-                echo "<div class='les-card'>";
-
-                echo "<h3>" . $row["lessen"] . "</h3>";
-                echo "<p><b>Trainer:</b> " . $row["trainer"] . "</p>";
- 
-                echo "</div>";
-            }
-
-        } else {
-
-            echo "<p>Geen les gevonden</p>";
-
-        }
-        ?>
-
-    </div>
-
-</body>
-
-</html>
 
 <?php
 // Sluit de database verbinding
