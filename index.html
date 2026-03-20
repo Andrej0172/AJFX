@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AJFX - Lessen Management Platform</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="homepage/styles.css">
 </head>
+
 <body>
     <!-- Error Modal (hidden by default) -->
     <div id="errorModal" class="modal">
@@ -19,27 +22,17 @@
             <button onclick="closeErrorModal()" class="btn-primary">Sluiten</button>
         </div>
     </div>
+    <!--header-->
+    <div id="header"></div>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-text">AJFX</span>
-            </div>
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="../lessen-overzicht.php" class="nav-link">Lessen</a></li>
-                <li><a href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php" class="nav-link">Reserveringen</a></li>
-                <li><a href="../account/login.php" class="nav-link">Account</a></li>
-                <li><a href="../medewerker_overzicht/medewerkers.php" class="nav-link">Medewerker overzicht</a></li>
-            </ul>
-        </div>
-    </nav>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+    </script>
+
 
     <!-- Hero Section -->
     <section class="hero">
@@ -52,7 +45,8 @@
                 <button onclick="window.location.href='../lessen-overzicht.php'" class="btn-primary">
                     Bekijk Lessen
                 </button>
-                <a href="../account/login.php" class="btn-secondary" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none;">
+                <a href="../account/login.php" class="btn-secondary"
+                    style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none;">
                     Mijn Account
                 </a>
             </div>
@@ -66,7 +60,7 @@
                 <h2 class="section-title">Alle Functionaliteiten</h2>
                 <p class="section-subtitle">Ontdek de mogelijkheden van AJFX</p>
             </div>
-            
+
             <div class="features-grid">
                 <!-- Informatie Epic -->
                 <div class="feature-epic">
@@ -131,13 +125,15 @@
                         <h3>Medewerker Registratie</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
+                        <li class="feature-item"
+                            onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
                             <div class="feature-content">
                                 <strong>Medewerker Overzicht</strong>
                                 <small>Overzicht van alle medewerkers</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
+                        <li class="feature-item"
+                            onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
                             <div class="feature-content">
                                 <strong>Medewerker Beheer</strong>
                                 <small>Voeg toe of wijzig medewerkers</small>
@@ -203,13 +199,15 @@
                         <h3>Reservering Registratie</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php'">
+                        <li class="feature-item"
+                            onclick="window.location.href='../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php'">
                             <div class="feature-content">
                                 <strong>Reserveringen Overzicht</strong>
                                 <small>Bekijk alle reserveringen</small>
                             </div>
                         </li>
-                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php'">
+                        <li class="feature-item"
+                            onclick="window.location.href='../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php'">
                             <div class="feature-content">
                                 <strong>Reservering Beheren</strong>
                                 <small>Wijzig reserveringen</small>
@@ -225,7 +223,8 @@
                         <h3>Management Dashboard</h3>
                     </div>
                     <ul class="feature-list">
-                        <li class="feature-item" onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
+                        <li class="feature-item"
+                            onclick="window.location.href='../medewerker_overzicht/medewerkers.php'">
                             <div class="feature-content">
                                 <strong>Dashboard Beheren</strong>
                                 <small>Overzicht van statistieken</small>
@@ -259,7 +258,9 @@
                     <h4>Platform</h4>
                     <ul class="footer-links">
                         <li><a href="../lessen-overzicht.php">Lessen</a></li>
-                        <li><a href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php">Reserveringen</a></li>
+                        <li><a
+                                href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php">Reserveringen</a>
+                        </li>
                         <li><a href="../medewerker_overzicht/medewerkers.php">Dashboard</a></li>
                     </ul>
                 </div>
@@ -291,6 +292,7 @@
         <p>Laden...</p>
     </div>
 
-    <script src="script.js"></script>
+    <script src="homepage/script.js"></script>
 </body>
+
 </html>
