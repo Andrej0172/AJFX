@@ -61,7 +61,7 @@ $result = $conn->query($sql);
 
     <div class="lessen-container">
 
-        <?php
+        <?php   
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {

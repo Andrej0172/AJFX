@@ -47,7 +47,7 @@ $result = $conn->query($sql);
 </head>
 
 <body>
-
+<?php include 'header.html'; ?>
 
 
     <!-- zoek balk -->
