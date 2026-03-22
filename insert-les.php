@@ -53,44 +53,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/insert-les.css">
     <title>Les toevoegen</title>
 </head>
 
 <body>
 
-<h1>Nieuwe les toevoegen</h1>
+<div class="container">
 
-<?php if ($fout != ""): ?>
-    <p style="color:red; font-weight:bold;">
-        <?= $fout ?>
-    </p>
-<?php endif; ?>
+    <h1>Nieuwe les toevoegen</h1>
 
-<?php if ($succes != ""): ?>
-    <p style="color:green; font-weight:bold;">
-        <?= $succes ?>
-    </p>
-<?php endif; ?>
+    <form method="POST">
 
-<form method="POST">
+        <input type="text" name="lessen" placeholder="Les naam"><br>
 
-    <input type="text" name="lessen" placeholder="Les naam"><br><br>
+        <input type="text" name="trainer" placeholder="Trainer"><br>
 
-    <input type="text" name="trainer" placeholder="Trainer"><br><br>
+        <input type="text" name="locatie" placeholder="Locatie"><br>
 
-    <input type="text" name="locatie" placeholder="Locatie"><br><br>
+        <input type="date" name="datum"><br>
 
-    <input type="date" name="datum"><br><br>
+        <input type="time" name="tijd"><br>
 
-    <input type="time" name="tijd"><br><br>
+        <input type="number" step="0.01" name="lesprijs" placeholder="Lesprijs"><br>
 
-    <input type="number" step="0.01" name="lesprijs" placeholder="Lesprijs"><br><br>
+        <button type="submit">Opslaan</button>
 
-    <button type="submit">Opslaan</button>
+    </form>
 
-</form>
-<a href="javascript:history.back()" style="text-decoration:none; font-size:24px;">
-    ❌
-</a>
+    <!-- WARNINGS ONDERAAN -->
+    <?php if ($fout != ""): ?>
+        <p class="error"><?= $fout ?></p>
+    <?php endif; ?>
+
+    <?php if ($succes != ""): ?>
+        <p class="success"><?= $succes ?></p>
+    <?php endif; ?>
+
+</div>
+
+<a href="javascript:history.back()" class="close">❌</a>
+
 </body>
 </html>

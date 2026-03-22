@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* container alles */
+.container {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    width: 320px;
+}
+
+/* H1 boven formulier */
+h1 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* form styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+}
+
+/* messages onderaan */
+.error {
+    margin-top: 15px;
+    background: #ffe5e5;
+    padding: 10px;
+    border-radius: 8px;
+    color: red;
+}
+
+.success {
+    margin-top: 15px;
+    background: #e6ffed;
+    padding: 10px;
+    border-radius: 8px;
+    color: green;
+}
+
+/* sluit knop */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    text-decoration: none;
+}

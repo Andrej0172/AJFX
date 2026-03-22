@@ -10,8 +10,28 @@ if ($conn->connect_error) {
     die("Connectie mislukt: " . $conn->connect_error);
 }
 
-// standaard: alle lessen
-$sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
+// inputs ophalen
+$zoek = $_GET['zoek'] ?? "";
+$min = $_GET['min'] ?? "";
+$max = $_GET['max'] ?? "";
+
+// query bouwen
+$sql = "SELECT * FROM lessenoverzicht WHERE 1=1";
+
+// zoekfunctie
+if ($zoek != "") {
+    $sql .= " AND (lessen LIKE '%$zoek%' 
+                OR trainer LIKE '%$zoek%' 
+                OR locatie LIKE '%$zoek%')";
+}
+
+// prijsfilter
+if ($min != "" && $max != "") {
+    $sql .= " AND lesprijs BETWEEN $min AND $max";
+}
+
+$sql .= " ORDER BY datum, tijd";
+
 $result = $conn->query($sql);
 ?>
 
@@ -30,17 +50,20 @@ $result = $conn->query($sql);
 <h1>Alle lessen</h1>
 
 <div class="knoppen">
-    <li>
     <a href="insert-les.php">
         <button>+ Nieuwe les toevoegen</button>
     </a>
-    </li>
-    <li>
-    <a href="zoek-balk.php">
-        <button class="zoek-btn">Zoek op prijs</button>
-    </a>
-    </li>
 </div>
+
+<!-- 🔥 ZOEK + PRIJS FILTER -->
+<form method="GET">
+    <input type="text" name="zoek" placeholder="Zoek les / trainer" value="<?= $zoek ?>">
+
+    <input type="number" step="0.01" name="min" placeholder="Min prijs" value="<?= $min ?>">
+    <input type="number" step="0.01" name="max" placeholder="Max prijs" value="<?= $max ?>">
+
+    <button type="submit">Filter</button>
+</form>
 
 <div class="lessen-container">
 

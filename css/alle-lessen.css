@@ -159,3 +159,7 @@ button:active {
     transform: translateY(0px);
     box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }
+
+li{
+    padding-top: 5px;
+}
