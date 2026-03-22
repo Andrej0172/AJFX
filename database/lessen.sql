@@ -28,6 +28,7 @@ create table lessenoverzicht
     ,locatie            VARCHAR(255)            NOT NULL    default 'Sportschool Utrecht'
     ,datum              DATE                    NOT NULL
     ,tijd               TIME                    NOT NULL
+    ,lesprijs           DECIMAL(5,2)            NOT NULL
     ,PRIMARY KEY (Id)
 )ENGINE=InnoDB;
 
@@ -50,20 +51,20 @@ INSERT INTO lessenoverzicht
     ,locatie
     ,datum
     ,tijd
+    ,lesprijs
     
 )
 VALUES 
-('Bootcamp', 'Mike Jansen', 'Sportschool Utrecht', '2026-03-13', '09:00:00'),
-('Yoga', 'Sanne de Vries', 'Sportschool Utrecht', '2026-03-14', '10:00:00'),
-('Spinning', 'Tom Bakker', 'Sportschool Utrecht', '2026-03-14', '18:30:00'),
-('Crossfit', 'Kevin Smit', 'Sportschool Utrecht', '2026-03-15', '17:00:00'),
-('Zumba', 'Laura Meijer', 'Sportschool Utrecht', '2026-03-16', '19:30:00'),
-('Pilates', 'Emma Willems', 'Sportschool Utrecht', '2026-03-17', '08:30:00'),
-('Kickboksen', 'Rachid El Amrani', 'Sportschool Utrecht', '2026-03-18', '20:00:00'),
-('Bodypump', 'Nina Verhoeven', 'Sportschool Utrecht', '2026-03-19', '18:00:00'),
-('HIIT Training', 'Daan Mulder', 'Sportschool Utrecht', '2026-03-20', '17:30:00'),
-('Core Stability', 'Sophie Kramer', 'Sportschool Utrecht', '2026-03-21', '09:30:00');
-
+('Bootcamp', 'Mike Jansen', 'Sportschool Utrecht', '2026-03-13', '09:00:00', 12.50),
+('Yoga', 'Sanne de Vries', 'Sportschool Utrecht', '2026-03-14', '10:00:00', 10.00),
+('Spinning', 'Tom Bakker', 'Sportschool Utrecht', '2026-03-14', '18:30:00', 11.50),
+('Crossfit', 'Kevin Smit', 'Sportschool Utrecht', '2026-03-15', '17:00:00', 15.00),
+('Zumba', 'Laura Meijer', 'Sportschool Utrecht', '2026-03-16', '19:30:00', 9.50),
+('Pilates', 'Emma Willems', 'Sportschool Utrecht', '2026-03-17', '08:30:00', 10.50),
+('Kickboksen', 'Rachid El Amrani', 'Sportschool Utrecht', '2026-03-18', '20:00:00', 13.00),
+('Bodypump', 'Nina Verhoeven', 'Sportschool Utrecht', '2026-03-19', '18:00:00', 12.00),
+('HIIT Training', 'Daan Mulder', 'Sportschool Utrecht', '2026-03-20', '17:30:00', 14.00),
+('Core Stability', 'Sophie Kramer', 'Sportschool Utrecht', '2026-03-21', '09:30:00', 11.00);
 
 
 
