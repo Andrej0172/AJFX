@@ -20,7 +20,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Alle lessen</title>
-    <link rel="stylesheet" href="css/lessen-overzicht.css">
+    <link rel="stylesheet" href="css/alle-lessen.css">
 </head>
 
 <body>
@@ -29,14 +29,18 @@ $result = $conn->query($sql);
 
 <h1>Alle lessen</h1>
 
-<a href="insert-les.php">
-    <button>+ Nieuwe les toevoegen</button>
-</a>
-
-<!-- LINK NAAR FILTER -->
-<a href="zoek-balk.php">
-    <button>Zoek op prijs</button>
-</a>
+<div class="knoppen">
+    <li>
+    <a href="insert-les.php">
+        <button>+ Nieuwe les toevoegen</button>
+    </a>
+    </li>
+    <li>
+    <a href="zoek-balk.php">
+        <button class="zoek-btn">Zoek op prijs</button>
+    </a>
+    </li>
+</div>
 
 <div class="lessen-container">
 
