@@ -9,6 +9,8 @@ $username = "root";
 $password = "";
 $dbname = "lessen";
 ?>
+
+<link rel="stylesheet" href="../homepage/styles.css">
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
@@ -20,7 +22,7 @@ $dbname = "lessen";
                 <span></span>
             </button>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="../homepage/index.html" class="nav-link active">Home</a></li>
                 <li><a href="../lessen-overzicht.php" class="nav-link">Lessen</a></li>
                 <li><a href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php" class="nav-link">Reserveringen</a></li>
                 <li><a href="../account/login.php" class="nav-link">Account</a></li>
