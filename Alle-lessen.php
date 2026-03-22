@@ -1,90 +1,65 @@
 <?php
-// Database gegevens
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "lessen";
 
-// Maak verbinding met de database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// verbinding controle
 if ($conn->connect_error) {
     die("Connectie mislukt: " . $conn->connect_error);
 }
 
-// database  op halen
-if (isset($_GET['zoek']) && $_GET['zoek'] != "") {
-
-
-
-    $zoek = strtolower($_GET['zoek']);
-
-    $sql = "SELECT * FROM lessenoverzicht 
-            WHERE LOWER(lessen) LIKE '%$zoek%' 
-            OR LOWER(trainer) LIKE '%$zoek%' 
-            OR LOWER(locatie) LIKE '%$zoek%'
-            ORDER BY datum, tijd";
-
-} else {
-
-    $sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
-
-}
-
+// standaard: alle lessen
+$sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
 $result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
     <meta charset="UTF-8">
-    <title>Lessen Overzicht</title>
-    <!-- css -->
+    <title>Alle lessen</title>
     <link rel="stylesheet" href="css/lessen-overzicht.css">
-    
 </head>
 
-
-
-
-
 <body>
-<!--header-->
+
 <?php include 'header.html'; ?>
 
-    <h1>Alle lessen</h1>
-    <a href="insert-les.html">
-        <button>+ Nieuwe les toevoegen</button>
-    </a>
+<h1>Alle lessen</h1>
 
-    <div class="lessen-container">
+<a href="insert-les.php">
+    <button>+ Nieuwe les toevoegen</button>
+</a>
 
-        <?php   
-        $result = $conn->query($sql);
+<!-- LINK NAAR FILTER -->
+<a href="zoek-balk.php">
+    <button>Zoek op prijs</button>
+</a>
 
-        if ($result->num_rows > 0) {
+<div class="lessen-container">
 
-            while ($row = $result->fetch_assoc()) {
+<?php
+if ($result && $result->num_rows > 0) {
 
-                echo "<div class='les-card'>";
+    while ($row = $result->fetch_assoc()) {
 
-                echo "<h3>" . $row["lessen"] . "</h3>";
-                echo "<p><b>Trainer:</b> " . $row["trainer"] . "</p>";
+        echo "<div class='les-card'>";
+        echo "<h3>" . $row["lessen"] . "</h3>";
+        echo "<p><b>Trainer:</b> " . $row["trainer"] . "</p>";
+        echo "<p><b>Datum:</b> " . $row["datum"] . "</p>";
+        echo "<p><b>Tijd:</b> " . $row["tijd"] . "</p>";
+        echo "<p><b>Prijs:</b> € " . number_format($row["lesprijs"], 2, ',', '.') . "</p>";
+        echo "</div>";
+    }
 
-                echo "</div>";
-            }
+} else {
+    echo "<p>Geen lessen gevonden</p>";
+}
+?>
 
-        } else {
-
-            echo "<p>Geen les gevonden</p>";
-
-        }
-        ?>
-
-    </div>
+</div>
 
 </body>
-
 </html>
