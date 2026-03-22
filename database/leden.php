@@ -8,7 +8,28 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "lessen";
+?>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">AJFX</span>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="../lessen-overzicht.php" class="nav-link">Lessen</a></li>
+                <li><a href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php" class="nav-link">Reserveringen</a></li>
+                <li><a href="../account/login.php" class="nav-link">Account</a></li>
+                <li><a href="../medewerker_overzicht/medewerkers.php" class="nav-link">Medewerker overzicht</a></li>
+            </ul>
+        </div>
+    </nav>
 
+<?php
 // Maak verbinding met de database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
