@@ -15,7 +15,7 @@ $zoek = $_GET['zoek'] ?? "";
 $min = $_GET['min'] ?? "";
 $max = $_GET['max'] ?? "";
 
-// query bouwen
+
 $sql = "SELECT * FROM lessenoverzicht WHERE 1=1";
 
 // zoekfunctie
@@ -55,12 +55,12 @@ $result = $conn->query($sql);
     </a>
 </div>
 
-<!-- 🔥 ZOEK + PRIJS FILTER -->
+<!--  ZOEK + PRIJS FILTER -->
 <form method="GET">
     <input type="text" name="zoek" placeholder="Zoek les / trainer" value="<?= $zoek ?>">
 
-    <input type="number" step="0.01" name="min" placeholder="Min prijs" value="<?= $min ?>">
-    <input type="number" step="0.01" name="max" placeholder="Max prijs" value="<?= $max ?>">
+    <input type="number" step="1" name="min" placeholder="Min prijs" value="<?= $min ?>">
+    <input type="number" step="1" name="max" placeholder="Max prijs" value="<?= $max ?>">
 
     <button type="submit">Filter</button>
 </form>
