@@ -4,11 +4,46 @@ $dbname   = 'medewerker_overzicht';
 $username = 'root';
 $password = '';
 
-$medewerkers = [];
-$fout        = null;
+$medewerkers  = [];
+$fout         = null;
+$succes       = null;
+$formulier_fout = null;
 
 $simuleer_fout = isset($_GET['fout']) && $_GET['fout'] == '1';
 
+// Medewerker toevoegen via POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $naam     = trim($_POST['naam'] ?? '');
+    $functie  = trim($_POST['functie'] ?? '');
+    $email    = trim($_POST['email'] ?? '');
+    $afdeling = trim($_POST['afdeling'] ?? '');
+
+    if (!$naam || !$functie || !$email || !$afdeling) {
+        $formulier_fout = "Vul alle verplichte velden in.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $formulier_fout = "Vul een geldig e-mailadres in.";
+    } else {
+        try {
+            $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $pdo->prepare("INSERT INTO medewerkers (naam, functie, email, afdeling) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$naam, $functie, $email, $afdeling]);
+
+            header("Location: medewerkers.php?succes=1");
+            exit;
+
+        } catch (PDOException $e) {
+            $formulier_fout = "Technische storing, medewerker is mogelijk niet opgeslagen.";
+        }
+    }
+}
+
+if (isset($_GET['succes'])) {
+    $succes = "Medewerker succesvol toegevoegd.";
+}
+
+// Medewerkers ophalen
 if ($simuleer_fout) {
     $fout = "Er is iets misgegaan bij het laden van de medewerkers.";
 } else {
@@ -25,7 +60,7 @@ if ($simuleer_fout) {
 }
 
 function initialen(string $naam): string {
-    $delen = explode(' ', $naam);
+    $delen  = explode(' ', $naam);
     $eerste = strtoupper(substr($delen[0], 0, 1));
     $laatste = strtoupper(substr(end($delen), 0, 1));
     return $eerste . $laatste;
@@ -48,17 +83,62 @@ function initialen(string $naam): string {
             <h1 class="header-titel">Medewerkers</h1>
         </div>
         <div class="header-acties">
-           <?php if ($simuleer_fout): ?>
-            <a href="medewerkers.php" class="knop-secundair">✓ Normaal</a>
-        <?php else: ?>
-            <a href="medewerkers.php?fout=1" class="knop-secundair">⚠ Fout aan</a>
-        <?php endif; ?>
-            <a href="medewerker_toevoegen.php" class="knop-primair">+ Medewerker toevoegen</a>
+            <?php if ($simuleer_fout): ?>
+                <a href="medewerkers.php" class="knop-secundair">✓ Normaal</a>
+            <?php else: ?>
+                <a href="medewerkers.php?fout=1" class="knop-secundair">⚠ Fout aan</a>
+            <?php endif; ?>
+            <button class="knop-primair" onclick="toggleFormulier()">+ Medewerker toevoegen</button>
         </div>
     </div>
 </header>
 
 <main>
+
+    <?php if ($succes): ?>
+        <div class="succes-blok">
+            <p><?= htmlspecialchars($succes) ?></p>
+        </div>
+    <?php endif; ?>
+
+    <!-- Toevoegen formulier (verborgen by default) -->
+    <div id="formulier-sectie" style="display: <?= $formulier_fout ? 'block' : 'none' ?>;">
+        <h2 class="sectie-titel">Medewerker toevoegen</h2>
+
+        <?php if ($formulier_fout): ?>
+            <div class="fout-blok">
+                <div class="fout-icoon">!</div>
+                <div>
+                    <p class="fout-tekst"><?= htmlspecialchars($formulier_fout) ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <form method="POST" action="medewerkers.php">
+            <div class="form-groep">
+                <label>Naam *</label>
+                <input type="text" name="naam" value="<?= htmlspecialchars($_POST['naam'] ?? '') ?>">
+            </div>
+            <div class="form-groep">
+                <label>Functie *</label>
+                <input type="text" name="functie" value="<?= htmlspecialchars($_POST['functie'] ?? '') ?>">
+            </div>
+            <div class="form-groep">
+                <label>E-mailadres *</label>
+                <input type="email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+            </div>
+            <div class="form-groep">
+                <label>Afdeling *</label>
+                <input type="text" name="afdeling" value="<?= htmlspecialchars($_POST['afdeling'] ?? '') ?>">
+            </div>
+            <div class="form-acties">
+                <button type="button" class="knop-secundair" onclick="toggleFormulier()">Annuleren</button>
+                <button type="submit" class="knop-primair">Toevoegen</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Medewerkers overzicht -->
     <?php if ($fout): ?>
         <div class="fout-blok">
             <div class="fout-icoon">!</div>
@@ -108,6 +188,13 @@ function initialen(string $naam): string {
 
     <?php endif; ?>
 </main>
+
+<script>
+function toggleFormulier() {
+    const sectie = document.getElementById('formulier-sectie');
+    sectie.style.display = sectie.style.display === 'none' ? 'block' : 'none';
+}
+</script>
 
 </body>
 </html>
