@@ -2,8 +2,8 @@
 /********************************************************************************
 -- Doel : Maak een nieuwe database aan heet lessen
 -- ******************************************************************************
--- Versie     Datum          Auteur			Omschrijving
--- ******     **********     *******		**************
+-- Versie     Datum          Auteur         Omschrijving
+-- ******     **********     *******        **************
 -- 01         26-02-2026     Xingru pan     database aangemaakt
 *********************************************************************************/ 
 drop database if exists lessen;
@@ -15,42 +15,38 @@ use lessen;
 /********************************************************************************
 -- Doel : Maak een nieuwe tabel aan heet lessenoverzicht
 -- ******************************************************************************
--- Versie     Datum          Auteur			Omschrijving
--- ******     **********     *******		**************
+-- Versie     Datum          Auteur         Omschrijving
+-- ******     **********     *******        **************
 -- 01         26-02-2026     Xingru pan     tabel aangemaakt
 *********************************************************************************/
 
 create table lessenoverzicht
 (
-    Id                  INT UNSIGNED            NOT NULL    AUTO_INCREMENT
-    ,lessen             VARCHAR(255)            NOT NULL
-    ,trainer            VARCHAR(255)            NOT NULL
-    ,locatie            VARCHAR(255)            NOT NULL    default 'Sportschool Utrecht'
-    ,datum              DATE                    NOT NULL
-    ,tijd               TIME                    NOT NULL
-    ,PRIMARY KEY (Id)
+    Id                  INT UNSIGNED            NOT NULL    AUTO_INCREMENT,
+    lessen              VARCHAR(255)            NOT NULL,
+    trainer             VARCHAR(255)            NOT NULL,
+    locatie             VARCHAR(255)            NOT NULL    default 'Sportschool Utrecht',
+    datum               DATE                    NOT NULL,
+    tijd                TIME                    NOT NULL,
+    PRIMARY KEY (Id)
 )ENGINE=InnoDB;
 
 -- Step : 3
 /********************************************************************************
 -- Doel : waarde toevoegen aan de tabel lessenoverzicht
 -- ******************************************************************************
--- Versie     Datum          Auteur			Omschrijving
--- ******     **********     *******		**************
+-- Versie     Datum          Auteur         Omschrijving
+-- ******     **********     *******        **************
 -- 01         26-02-2026     Xingru pan     waarde toegevoegd
 *********************************************************************************/
 
-
-
-
 INSERT INTO lessenoverzicht
 (
-    lessen
-    ,trainer
-    ,locatie
-    ,datum
-    ,tijd
-    
+    lessen,
+    trainer,
+    locatie,
+    datum,
+    tijd
 )
 VALUES 
 ('Bootcamp', 'Mike Jansen', 'Sportschool Utrecht', '2026-03-13', '09:00:00'),
@@ -65,40 +61,67 @@ VALUES
 ('Core Stability', 'Sophie Kramer', 'Sportschool Utrecht', '2026-03-21', '09:30:00');
 
 
-
-
-
-
-
+-- Step : 4
+/********************************************************************************
+-- Doel : Maak een nieuwe tabel aan heet ledenoverzicht
+-- ******************************************************************************
+-- Versie     Datum          Auteur         Omschrijving
+-- ******     **********     *******        **************
+-- 01         26-02-2026     Xingru pan     tabel aangemaakt
+*********************************************************************************/
 
 create table ledenoverzicht
 (
-    Id                  INT UNSIGNED            NOT NULL    AUTO_INCREMENT
-    ,leden              VARCHAR(255)            NOT NULL
-    ,lidnummer          VARCHAR(255)            NOT NULL
-    ,lessen             VARCHAR(255)            NOT NULL
-    ,leeftijd           decimal(3,0)            NOT NULL
-    ,email             VARCHAR(255)            NOT NULL
-    ,PRIMARY KEY (Id)
+    Id                  INT UNSIGNED            NOT NULL    AUTO_INCREMENT,
+    leden               VARCHAR(255)            NOT NULL,
+    lidnummer           INT UNSIGNED            NOT NULL    AUTO_INCREMENT,
+    lessen              VARCHAR(255)            NOT NULL,
+    leeftijd            DECIMAL(3,0)            NOT NULL,
+    email               VARCHAR(255)            NOT NULL,
+    PRIMARY KEY (Id),
+    UNIQUE (lidnummer)
+)ENGINE=InnoDB;
+
+-- ❗ FIX: MySQL staat maar 1 AUTO_INCREMENT toe → dus lidnummer aanpassen
+
+DROP TABLE ledenoverzicht;
+
+create table ledenoverzicht
+(
+    Id                  INT UNSIGNED            NOT NULL    AUTO_INCREMENT,
+    leden               VARCHAR(255)            NOT NULL,
+    lidnummer           INT UNSIGNED            NOT NULL,
+    lessen              VARCHAR(255)            NOT NULL,
+    leeftijd            DECIMAL(3,0)            NOT NULL,
+    email               VARCHAR(255)            NOT NULL,
+    PRIMARY KEY (Id)
 )ENGINE=InnoDB;
 
 
+-- Step : 5
+/********************************************************************************
+-- Doel : waarde toevoegen aan de tabel ledenoverzicht
+-- ******************************************************************************
+-- Versie     Datum          Auteur         Omschrijving
+-- ******     **********     *******        **************
+-- 01         26-02-2026     Xingru pan     waarde toegevoegd
+*********************************************************************************/
+
 INSERT INTO ledenoverzicht
 (
-    leden
-    ,lidnummer
-    ,lessen
-    ,leeftijd
-    ,email
+    leden,
+    lidnummer,
+    lessen,
+    leeftijd,
+    email
 )
-
 VALUES
-('Jan Jansen', 'L1001', 'Yoga, Fitness', 28, 'jan.jansen@example.com'),
-('Mike Jansen', 'L1002', 'Fitness, Boksen', 31, 'mike.jansen@example.com'),
-('Piet Pietersen', 'L1003', 'Zwemmen, Yoga', 24, 'piet.pietersen@example.com'),
-('Sanne de Vries', 'L1004', 'Yoga, Pilates', 26, 'sanne.vries@example.com'),
-('Anna de Vries', 'L1005', 'Dans, Fitness', 22, 'anna.devries@example.com'),
-('Tom Bakker', 'L1006', 'Fitness, Boksen', 29, 'tom.bakker@example.com'),
-('Mark Bakker', 'L1007', 'Zwemmen, Fitness', 35, 'mark.bakker@example.com'),
-('Kevin Smit', 'L1008', 'Fitness, Hardlopen', 27, 'kevin.smit@example.com'),
-('Lisa Meijer', 'L1009', 'Pilates, Yoga', 30, 'lisa.meijer@example.com');
+('Jan Jansen', 1, 'Yoga, Fitness', 28, 'jan.jansen@example.com'),
+('Mike Jansen', 2, 'Fitness, Boksen', 31, 'mike.jansen@example.com'),
+('Piet Pietersen', 3, 'Zwemmen, Yoga', 24, 'piet.pietersen@example.com'),
+('Sanne de Vries', 4, 'Yoga, Pilates', 26, 'sanne.vries@example.com'),
+('Anna de Vries', 5, 'Dans, Fitness', 22, 'anna.devries@example.com'),
+('Tom Bakker', 6, 'Fitness, Boksen', 29, 'tom.bakker@example.com'),
+('Mark Bakker', 7, 'Zwemmen, Fitness', 35, 'mark.bakker@example.com'),
+('Kevin Smit', 8, 'Fitness, Hardlopen', 27, 'kevin.smit@example.com'),
+('Lisa Meijer', 9, 'Pilates, Yoga', 30, 'lisa.meijer@example.com');

@@ -1,143 +1,290 @@
 <?php
-// Database gegevens
+// =======================
+// DATABASE INSTELLINGEN
+// =======================
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "lessen";
+$username   = "root";
+$password   = "";
+$dbname     = "lessen";
 
-// Maak verbinding met de database
+// Variabele om fouten bij te houden
+$dbFout = false;
+
+// Zoekterm ophalen uit URL (GET)
+$zoek = isset($_GET['zoek']) ? trim($_GET['zoek']) : '';
+
+// =======================
+// DATABASE VERBINDING
+// =======================
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// verbinding controle
+// Check of verbinding gelukt is
 if ($conn->connect_error) {
-    die("Connectie mislukt: " . $conn->connect_error);
+    $dbFout = true;
 }
 
-// database  op halen
-if (isset($_GET['zoek']) && $_GET['zoek'] != "") {
+// =======================
+// QUERY UITVOEREN
+// =======================
+if (!$dbFout) {
 
+    // Als er gezocht wordt
+    if ($zoek !== "") {
 
+        // Beveilig invoer + lowercase maken
+        $zoekSafe = $conn->real_escape_string(strtolower($zoek));
 
-    $zoek = strtolower($_GET['zoek']);
+        // Zoek in meerdere kolommen
+        $sql = "SELECT * FROM lessenoverzicht 
+                WHERE LOWER(lessen)  LIKE '%$zoekSafe%'
+                   OR LOWER(trainer) LIKE '%$zoekSafe%'
+                   OR LOWER(locatie) LIKE '%$zoekSafe%'
+                ORDER BY datum, tijd";
 
-    $sql = "SELECT * FROM lessenoverzicht 
-            WHERE LOWER(lessen) LIKE '%$zoek%' 
-            OR LOWER(trainer) LIKE '%$zoek%' 
-            OR LOWER(locatie) LIKE '%$zoek%'
-            ORDER BY datum, tijd";
+    } else {
+        // Geen zoekterm → alles ophalen
+        $sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
+    }
 
-} else {
+    // Query uitvoeren
+    $result = $conn->query($sql);
 
-    $sql = "SELECT * FROM lessenoverzicht ORDER BY datum, tijd";
-
+    // Check op fout
+    if ($result === false) {
+        $dbFout = true;
+    }
 }
 
-$result = $conn->query($sql);
+// =======================
+// FUNCTIES
+// =======================
+
+// Maak initialen van naam (bijv. Jan Jansen → JJ)
+function initialen($naam) {
+    $delen = explode(' ', trim($naam));
+    $init  = strtoupper(substr($delen[0], 0, 1));
+
+    if (count($delen) > 1) {
+        $init .= strtoupper(substr(end($delen), 0, 1));
+    }
+
+    return $init;
+}
+
+// Datum leesbaar maken
+function datumLeesbaar($datum) {
+    $ts = strtotime($datum);
+    return $ts ? date('d M Y', $ts) : $datum;
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lessen Overzicht</title>
 
-    <!-- css -->
-    <link rel="stylesheet" href="css/lessen-overzicht.css">
+    <!-- CSS bestanden -->
+    <link rel="stylesheet" href="../css/lessen-overzicht.css">
+    <link rel="stylesheet" href="../css/css/lessss.css">
+    <link href="../homepage/styles.css" rel="stylesheet">
 </head>
-
 <body>
 
+<!-- =======================
+     NAVBAR
+======================= -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-text">AJFX</span>
+        </div>
 
+        <!-- Mobile menu knop -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-    <!-- zoek balk -->
-    <form method="GET">
-        <input type="text" name="zoek" placeholder="Zoek een les...">
-        <button type="submit">Zoeken</button>
+        <!-- Navigatie links -->
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link active">Home</a></li>
+            <li><a href="../lessen-overzicht.php" class="nav-link">Lessen</a></li>
+            <li><a href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php" class="nav-link">Reserveringen</a></li>
+            <li><a href="../account/login.php" class="nav-link">Account</a></li>
+            <li><a href="../medewerker_overzicht/medewerkers.php" class="nav-link">Medewerker overzicht</a></li>
+        </ul>
+    </div>
+</nav>
+
+<h2>qq</h2>
+
+<!-- =======================
+     ZOEKBALK
+======================= -->
+<div class="zoek-wrapper">
+    <form method="GET" action="">
+        <!-- Zoek input -->
+        <input 
+            type="text" 
+            name="zoek" 
+            placeholder="Zoek op les, trainer of locatie..." 
+            value="<?= htmlspecialchars($zoek) ?>"
+            class="zoek-input"
+        >
+
+        <!-- Zoek knop -->
+        <button type="submit" class="zoek-btn">🔍 Zoeken</button>
+
+        <!-- Reset knop -->
+        <?php if ($zoek !== ''): ?>
+            <a href="?" class="zoek-reset">✕ Wissen</a>
+        <?php endif; ?>
     </form>
+</div>
 
-    <h1>Ingepland</h1>
+<main class="main">
 
+<?php if ($dbFout): ?>
 
-    <table>
+    <!-- =======================
+         FOUTMELDING
+    ======================= -->
+    <div class="foutmelding-wrapper">
+        <div class="foutmelding-icon">⚠️</div>
+        <div class="foutmelding">Er is iets misgegaan bij het laden van de lessen.</div>
+        <p class="foutmelding-hint">Controleer de databaseverbinding en probeer het opnieuw.</p>
+    </div>
 
-        <thead>
-            <tr>
+<?php else:
 
-                <th>Les</th>
-                <th>Trainer</th>
-                <th>Locatie</th>
-                <th>Datum</th>
-                <th>Tijd</th>
-            </tr>
-        </thead>
+    // Resultaten in array stoppen
+    $rows = [];
+    while ($row = $result->fetch_assoc()) {
+        $rows[] = $row;
+    }
 
-        <tbody>
+    // Aantal lessen tellen
+    $aantalLessen = count($rows);
+?>
 
-            <?php
-            // Controle
-            if ($result->num_rows > 0) {
+    <!-- =======================
+         TABEL (INGEPLAND)
+    ======================= -->
+    <div class="sectie-header">
+        <h2>Ingepland</h2>
+        <div class="sectie-lijn"></div>
 
-                while ($row = $result->fetch_assoc()) {
+        <?php if ($aantalLessen > 0): ?>
+            <span class="sectie-badge"><?= $aantalLessen ?> lessen</span>
+        <?php endif; ?>
+    </div>
 
-                    echo "<tr>";
-                    echo "<td>" . $row["lessen"] . "</td>";
-                    echo "<td>" . $row["trainer"] . "</td>";
-                    echo "<td>" . $row["locatie"] . "</td>";
-                    echo "<td>" . $row["datum"] . "</td>";
-                    echo "<td>" . $row["tijd"] . "</td>";
+    <div class="tabel-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Les</th>
+                    <th>Trainer</th>
+                    <th>Locatie</th>
+                    <th>Datum</th>
+                    <th>Tijd</th>
+                </tr>
+            </thead>
+            <tbody>
 
-                    echo "</tr>";
-                }
+            <?php if ($aantalLessen > 0): foreach ($rows as $row): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row['lessen']) ?></td>
 
-            } else {
+                    <td>
+                        <div class="td-trainer">
+                            <div class="avatar"><?= initialen($row['trainer']) ?></div>
+                            <?= htmlspecialchars($row['trainer']) ?>
+                        </div>
+                    </td>
 
-                // unhappy
-                echo "<tr><td colspan='5'>Geen les gevonden</td></tr>";
-            }
+                    <td><?= htmlspecialchars($row['locatie']) ?></td>
 
+                    <td><?= datumLeesbaar($row['datum']) ?></td>
 
+                    <td><?= htmlspecialchars(substr($row['tijd'], 0, 5)) ?></td>
+                </tr>
 
-            ?>
+            <?php endforeach; else: ?>
+                <tr>
+                    <td colspan="5">Geen lessen gevonden</td>
+                </tr>
+            <?php endif; ?>
 
+            </tbody>
+        </table>
+    </div>
 
-        </tbody>
-    </table>
-    <!--alle lessen-->
+    <!-- =======================
+         KAARTEN (ALLE LESSEN)
+    ======================= -->
+    <div class="sectie-header">
+        <h2>Alle lessen</h2>
+        <div class="sectie-lijn"></div>
+    </div>
 
-    <h1>Alle lessen</h1>
+    <div class="lessen-grid">
 
-    <div class="lessen-container">
+    <?php if ($aantalLessen > 0): foreach ($rows as $row): ?>
+        <div class="les-card">
+            <div class="les-card-top"></div>
 
-        <?php
-        $result = $conn->query($sql);
+            <div class="les-card-body">
+                <div class="les-card-titel">
+                    <?= htmlspecialchars($row['lessen']) ?>
+                </div>
 
-        if ($result->num_rows > 0) {
+                <div class="les-card-meta">
 
-            while ($row = $result->fetch_assoc()) {
+                    <div class="les-card-meta-item">
+                        <div class="icon">📅</div>
+                        <span><?= datumLeesbaar($row['datum']) ?></span>
+                    </div>
 
-                echo "<div class='les-card'>";
+                    <div class="les-card-meta-item">
+                        <div class="icon">⏱</div>
+                        <span><?= htmlspecialchars(substr($row['tijd'], 0, 5)) ?></span>
+                    </div>
 
-                echo "<h3>" . $row["lessen"] . "</h3>";
-                echo "<p><b>Trainer:</b> " . $row["trainer"] . "</p>";
- 
-                echo "</div>";
-            }
+                    <div class="les-card-meta-item">
+                        <div class="icon">📍</div>
+                        <span><?= htmlspecialchars($row['locatie']) ?></span>
+                    </div>
 
-        } else {
+                </div>
+            </div>
 
-            echo "<p>Geen les gevonden</p>";
+            <div class="les-card-trainer">
+                <div class="avatar"><?= initialen($row['trainer']) ?></div>
+                <strong><?= htmlspecialchars($row['trainer']) ?></strong>
+            </div>
+        </div>
 
-        }
-        ?>
+    <?php endforeach; else: ?>
+        <p>Geen lessen beschikbaar</p>
+    <?php endif; ?>
 
     </div>
 
-</body>
+<?php endif; ?>
+</main>
 
+</body>
 </html>
 
 <?php
-// Sluit de database verbinding
-$conn->close();
+// =======================
+// VERBINDING SLUITEN
+// =======================
+if (!$dbFout && isset($conn)) {
+    $conn->close();
+}
 ?>

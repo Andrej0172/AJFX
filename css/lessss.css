@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f4f5f7;
+  --surface:   #ffffff;
+  --border:    #e3e6ed;
+  --accent:    #4f6ef7;
+  --accent-lt: #eef1fe;
+  --text:      #1a1d27;
+  --muted:     #6b7280;
+  --green:     #22c55e;
+  --green-lt:  #dcfce7;
+  --amber:     #f59e0b;
+  --amber-lt:  #fef3c7;
+  --radius:    12px;
+  --shadow:    0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.06);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-brand h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -.3px;
+}
+.header-brand span {
+  font-size: .75rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.search-form {
+  display: flex;
+  gap: 8px;
+}
+.search-form input {
+  padding: 8px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: .875rem;
+  width: 260px;
+  background: var(--bg);
+  transition: border-color .15s;
+  outline: none;
+}
+.search-form input:focus { border-color: var(--accent); background: #fff; }
+.search-form button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.search-form button:hover { opacity: .88; }
+
+/* ── Main ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* ── Sectie header ── */
+.sectie-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 32px 0 14px;
+}
+.sectie-header:first-of-type { margin-top: 0; }
+.sectie-header h2 {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.sectie-lijn {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.sectie-badge {
+  font-size: .72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--accent-lt);
+  color: var(--accent);
+}
+
+/* ── Tabel ── */
+.tabel-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+table { width: 100%; border-collapse: collapse; }
+thead { background: #fafbfc; }
+thead th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #fafbff; }
+td {
+  padding: 13px 16px;
+  font-size: .875rem;
+  vertical-align: middle;
+}
+.td-les { font-weight: 600; color: var(--text); }
+
+/* Trainer cell */
+.td-trainer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+/* Avatar */
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent-lt);
+  color: var(--accent);
+  font-size: .7rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Chips */
+.datum-chip,
+.tijd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 500;
+  font-family: 'DM Mono', monospace;
+}
+.datum-chip {
+  background: var(--amber-lt);
+  color: #92400e;
+}
+.tijd-chip {
+  background: var(--green-lt);
+  color: #166534;
+}
+
+/* ── Kaarten grid ── */
+.lessen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.les-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .15s, box-shadow .15s;
+  display: flex;
+  flex-direction: column;
+}
+.les-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(79,110,247,.12);
+}
+.les-card-top {
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent), #818cf8);
+}
+.les-card-body {
+  padding: 16px 16px 12px;
+  flex: 1;
+}
+.les-card-titel {
+  font-size: .95rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.les-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.les-card-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .8rem;
+  color: var(--muted);
+}
+.les-card-meta-item .icon { font-size: .85rem; flex-shrink: 0; }
+.les-card-meta-item .label { font-weight: 500; }
+
+.les-card-trainer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  font-size: .8rem;
+  font-weight: 600;
+  background: #fafbfc;
+}
+
+/* ── Geen resultaat ── */
+.geen-resultaat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px;
+  color: var(--muted);
+  font-size: .875rem;
+}
+
+/* ── Foutmelding ── */
+.foutmelding-wrapper {
+  text-align: center;
+  padding: 64px 24px;
+}
+.foutmelding-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.foutmelding { font-size: 1rem; font-weight: 600; color: var(--text); }
+.foutmelding-hint { font-size: .85rem; color: var(--muted); margin-top: 6px; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .header { flex-direction: column; align-items: flex-start; padding: 14px 16px; }
+  .search-form input { width: 100%; }
+  .main { padding: 20px 12px 48px; }
+  .tabel-wrapper { overflow-x: auto; }
+  .lessen-grid { grid-template-columns: 1fr; }
+}
+
+.zoek-wrapper {
+    margin: 1.5rem auto;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+}
+
+.zoek-wrapper form {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.zoek-input {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.zoek-btn {
+    padding: 0.6rem 1.2rem;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.zoek-reset {
+    padding: 0.6rem 0.8rem;
+    color: #999;
+    text-decoration: none;
+    align-self: center;
+}
