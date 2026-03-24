@@ -91,19 +91,10 @@ function datumLeesbaar($datum) {
     <link href="../homepage/styles.css" rel="stylesheet">
 </head>
 <body>
-<<<<<<< HEAD
-<?php include 'header.html'; ?>
-=======
 
-<!-- =======================
-     NAVBAR
-======================= -->
-<nav class="navbar">
-    <div class="nav-container">
-        <div class="logo">
-            <span class="logo-text">AJFX</span>
-        </div>
->>>>>>> DEV-Branch
+<?php include 'header.html'; ?>
+
+
 
         <!-- Mobile menu knop -->
         <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
