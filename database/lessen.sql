@@ -22,7 +22,6 @@ use lessen;
 
 create table lessenoverzicht
 (
-<<<<<<< HEAD
     Id                  INT UNSIGNED            NOT NULL    AUTO_INCREMENT
     ,lessen             VARCHAR(255)            NOT NULL
     ,trainer            VARCHAR(255)            NOT NULL
@@ -31,15 +30,6 @@ create table lessenoverzicht
     ,tijd               TIME                    NOT NULL
     ,lesprijs           DECIMAL(5,2)            NOT NULL
     ,PRIMARY KEY (Id)
-=======
-    Id                  INT UNSIGNED            NOT NULL    AUTO_INCREMENT,
-    lessen              VARCHAR(255)            NOT NULL,
-    trainer             VARCHAR(255)            NOT NULL,
-    locatie             VARCHAR(255)            NOT NULL    default 'Sportschool Utrecht',
-    datum               DATE                    NOT NULL,
-    tijd                TIME                    NOT NULL,
-    PRIMARY KEY (Id)
->>>>>>> DEV-Branch
 )ENGINE=InnoDB;
 
 -- Step : 3
@@ -59,12 +49,11 @@ INSERT INTO lessenoverzicht
     ,datum
     ,tijd
     ,lesprijs
-    
-    lessen,
-    trainer,
-    locatie,
-    datum,
-    tijd
+    ,lessen
+    ,trainer
+    ,datum
+    ,tijd
+    ,lesprijs
 )
 VALUES 
 ('Bootcamp', 'Mike Jansen', 'Sportschool Utrecht', '2026-03-13', '09:00:00', 12.50),
