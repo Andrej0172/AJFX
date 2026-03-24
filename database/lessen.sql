@@ -49,11 +49,6 @@ INSERT INTO lessenoverzicht
     ,datum
     ,tijd
     ,lesprijs
-    ,lessen
-    ,trainer
-    ,datum
-    ,tijd
-    ,lesprijs
 )
 VALUES 
 ('Bootcamp', 'Mike Jansen', 'Sportschool Utrecht', '2026-03-13', '09:00:00', 12.50),
@@ -80,7 +75,7 @@ create table ledenoverzicht
 (
     Id                  INT UNSIGNED            NOT NULL    AUTO_INCREMENT,
     leden               VARCHAR(255)            NOT NULL,
-    lidnummer           INT UNSIGNED            NOT NULL    AUTO_INCREMENT,
+    lidnummer           INT UNSIGNED            NOT NULL,
     lessen              VARCHAR(255)            NOT NULL,
     leeftijd            DECIMAL(3,0)            NOT NULL,
     email               VARCHAR(255)            NOT NULL,
@@ -88,7 +83,6 @@ create table ledenoverzicht
     UNIQUE (lidnummer)
 )ENGINE=InnoDB;
 
--- ❗ FIX: MySQL staat maar 1 AUTO_INCREMENT toe → dus lidnummer aanpassen
 
 DROP TABLE ledenoverzicht;
 
