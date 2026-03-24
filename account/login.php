@@ -3,7 +3,7 @@ session_start();
 require_once 'db.php';
 
 if (isset($_SESSION['gebruiker_id'])) {
-    header('Location: account.php');
+    header('Location: ../index.html');
     exit;
 }
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     session_regenerate_id(true);
                     $_SESSION['gebruiker_id']   = $gebruiker['id'];
                     $_SESSION['gebruiker_naam'] = $gebruiker['naam'];
-                    header('Location: account.php');
+                    header('Location: ../index.html');
                     exit;
                 } else {
                     // UNHAPPY: verkeerde gegevens
