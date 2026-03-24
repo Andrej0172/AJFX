@@ -1,68 +1,70 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['gebruiker_id'])) {
-    header('Location: login.php?melding=niet_ingelogd');
-    exit;
-}
-
 require_once 'db.php';
 
-$stmt = $pdo->prepare("SELECT * FROM gebruikers WHERE id = ?");
-$stmt->execute([$_SESSION['gebruiker_id']]);
-$gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
+$success_message = '';
+$error_message   = '';
 
-if (!$gebruiker) {
-    session_destroy();
-    header('Location: login.php');
-    exit;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $naam       = trim($_POST['naam']       ?? '');
+    $email      = trim($_POST['email']      ?? '');
+    $wachtwoord = trim($_POST['wachtwoord'] ?? '');
+
+    if (empty($naam) || empty($email) || empty($wachtwoord)) {
+        $error_message = 'Vul alle verplichte velden in (naam, e-mail, wachtwoord).';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = 'Voer een geldig e-mailadres in.';
+    } elseif (strlen($wachtwoord) < 6) {
+        $error_message = 'Het wachtwoord moet minimaal 6 tekens bevatten.';
+    } else {
+        if ($pdo === null) {
+            // UNHAPPY: database niet bereikbaar
+            $error_message = 'Uw account kon niet worden aangemaakt door een technische storing. Probeer het later opnieuw.';
+        } else {
+            try {
+                $check = $pdo->prepare('SELECT id FROM gebruikers WHERE email = ?');
+                $check->execute([$email]);
+                if ($check->fetch()) {
+                    $error_message = 'Dit e-mailadres is al in gebruik. Probeer in te loggen.';
+                } else {
+                    // HAPPY: account opslaan
+                    $hash = password_hash($wachtwoord, PASSWORD_DEFAULT);
+                    $stmt = $pdo->prepare('INSERT INTO gebruikers (naam, email, wachtwoord) VALUES (?, ?, ?)');
+                    $stmt->execute([$naam, $email, $hash]);
+                    $success_message = 'Uw account is succesvol aangemaakt! U kunt nu inloggen.';
+                }
+            } catch (PDOException $e) {
+                // UNHAPPY: databasefout bij opslaan
+                $error_message = 'Uw account kon niet worden aangemaakt door een technische storing. Probeer het later opnieuw.';
+            }
+        }
+    }
 }
-
-$stmt = $pdo->prepare("
-    SELECT r.datum, l.naam AS les_naam, l.dag, l.tijd
-    FROM reserveringen r
-    JOIN lessen l ON r.les_id = l.id
-    WHERE r.gebruiker_id = ?
-    ORDER BY r.datum ASC
-");
-$stmt->execute([$_SESSION['gebruiker_id']]);
-$reserveringen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accountoverzicht – AJFX</title>
+    <title>Account aanmaken – AJFX</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../homepage/styles.css">
     <style>
-        .account-wrapper { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; margin-top: 70px; }
-        .account-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--gray-200); }
-        .account-header h1 { font-size: 2rem; color: var(--dark); margin-bottom: 0.25rem; }
-        .account-header p { color: var(--gray-600); }
-        .card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
-        .card-title { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
-        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid var(--gray-100); font-size: 0.95rem; }
-        .info-row:last-child { border-bottom: none; }
-        .info-row .label { color: var(--gray-600); }
-        .info-row .value { font-weight: 600; color: var(--dark); }
-        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
-        .badge-premium { background: #fef3c7; color: #d97706; }
-        .badge-basis   { background: #f0fdf4; color: #16a34a; }
-        .badge-pro     { background: #eff6ff; color: #2563eb; }
-        .les-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--gray-50); border-radius: var(--radius-md); margin-bottom: 0.6rem; font-size: 0.95rem; }
-        .les-item:last-child { margin-bottom: 0; }
-        .les-naam { font-weight: 600; color: var(--dark); }
-        .les-detail { color: var(--gray-600); font-size: 0.85rem; }
-        .les-datum { font-size: 0.85rem; color: var(--gray-600); text-align: right; }
-        .geen-reserveringen { text-align: center; color: var(--gray-400); padding: 1rem; font-size: 0.95rem; }
-        .action-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
-        .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); padding: 0.625rem 1.25rem; border-radius: var(--radius-md); font-family: var(--font-main); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-        .btn-outline:hover { background: var(--primary); color: white; }
-        .btn-danger { background: transparent; color: #dc2626; border: 2px solid #dc2626; padding: 0.625rem 1.25rem; border-radius: var(--radius-md); font-family: var(--font-main); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-        .btn-danger:hover { background: #dc2626; color: white; }
+        .page-wrapper { max-width: 500px; margin: 70px auto 4rem; padding: 2rem 1.5rem; }
+        .page-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--gray-200); }
+        .page-header h1 { font-size: 2rem; color: var(--dark); margin-bottom: 0.25rem; }
+        .page-header p { color: var(--gray-600); }
+        .card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-weight: 600; font-size: 0.9rem; color: var(--dark); margin-bottom: 0.4rem; }
+        .form-group input { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--radius-md); font-family: var(--font-main); font-size: 1rem; color: var(--dark); transition: border-color 0.2s; box-sizing: border-box; }
+        .form-group input:focus { outline: none; border-color: var(--primary); }
+        .error-msg { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.9rem; }
+        .success-msg { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.9rem; }
+        .btn-row { display: flex; gap: 1rem; margin-top: 1.5rem; align-items: center; }
+        .link-secondary { color: var(--gray-600); font-size: 0.9rem; text-decoration: none; }
+        .link-secondary:hover { color: var(--primary); }
     </style>
 </head>
 <body>
@@ -70,60 +72,47 @@ $reserveringen = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="nav-container">
             <div class="logo"><span class="logo-text">AJFX</span></div>
             <ul class="nav-menu">
-                <li><a href="../homepage/index.html" class="nav-link">Home</a></li>
-                <li><a href="account.php" class="nav-link active">Account</a></li>
-                <li><a href="logout.php" class="nav-link">Uitloggen</a></li>
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="../lessen-overzicht.php" class="nav-link">Lessen</a></li>
+                <li><a href="../medewerker_overzicht/reservering_overzicht/reserveringsoverzicht.php" class="nav-link">Reserveringen</a></li>
+                <li><a href="login.php" class="nav-link active">Account</a></li>
+                <li><a href="../medewerker_overzicht/medewerkers.php" class="nav-link">Medewerker overzicht</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="account-wrapper">
-        <div class="account-header">
-            <h1>Welkom, <?= htmlspecialchars($gebruiker['naam']) ?>!</h1>
-            <p>Hier vindt u uw persoonlijke gegevens en reserveringen.</p>
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Account aanmaken</h1>
+            <p>Maak een gratis account aan om verder te gaan</p>
         </div>
-
         <div class="card">
-            <div class="card-title">👤 Persoonlijke Gegevens</div>
-            <div class="info-row"><span class="label">Naam</span><span class="value"><?= htmlspecialchars($gebruiker['naam']) ?></span></div>
-            <div class="info-row"><span class="label">E-mailadres</span><span class="value"><?= htmlspecialchars($gebruiker['email']) ?></span></div>
-            <div class="info-row"><span class="label">Lid sinds</span><span class="value"><?= date('d-m-Y', strtotime($gebruiker['aangemaakt_op'])) ?></span></div>
-            <div class="info-row">
-                <span class="label">Lidmaatschap</span>
-                <span class="value">
-                    <?php
-                        $lid = $gebruiker['lidmaatschap'];
-                        $class = match($lid) { 'Premium' => 'badge-premium', 'Pro' => 'badge-pro', default => 'badge-basis' };
-                    ?>
-                    <span class="badge <?= $class ?>"><?= htmlspecialchars($lid) ?></span>
-                </span>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">🎫 Mijn Reserveringen</div>
-            <?php if (empty($reserveringen)): ?>
-                <p class="geen-reserveringen">U heeft nog geen reserveringen.</p>
+            <?php if ($success_message): ?>
+                <div class="success-msg">✅ <?= htmlspecialchars($success_message) ?></div>
+                <a href="login.php" class="btn-primary" style="display:inline-block;text-decoration:none;text-align:center;">Naar inlogpagina</a>
             <?php else: ?>
-                <?php foreach ($reserveringen as $res): ?>
-                    <div class="les-item">
-                        <div>
-                            <div class="les-naam"><?= htmlspecialchars($res['les_naam']) ?></div>
-                            <div class="les-detail"><?= htmlspecialchars($res['dag']) ?> om <?= substr($res['tijd'], 0, 5) ?></div>
-                        </div>
-                        <div class="les-datum"><?= date('d-m-Y', strtotime($res['datum'])) ?></div>
+                <?php if ($error_message): ?>
+                    <div class="error-msg">⚠️ <?= htmlspecialchars($error_message) ?></div>
+                <?php endif; ?>
+                <form method="POST" action="account.php">
+                    <div class="form-group">
+                        <label for="naam">Naam</label>
+                        <input type="text" id="naam" name="naam" required value="<?= htmlspecialchars($_POST['naam'] ?? '') ?>">
                     </div>
-                <?php endforeach; ?>
+                    <div class="form-group">
+                        <label for="email">E-mailadres</label>
+                        <input type="email" id="email" name="email" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="wachtwoord">Wachtwoord</label>
+                        <input type="password" id="wachtwoord" name="wachtwoord" required minlength="6">
+                    </div>
+                    <div class="btn-row">
+                        <button type="submit" class="btn-primary">Account aanmaken</button>
+                        <a href="login.php" class="link-secondary">Al een account? Inloggen</a>
+                    </div>
+                </form>
             <?php endif; ?>
-        </div>
-
-        <div class="card">
-            <div class="card-title">⚙️ Instellingen</div>
-            <div class="action-buttons">
-                <a href="gegevens_wijzigen.php" class="btn-outline">✏️ Gegevens Wijzigen</a>
-                <a href="wachtwoord_wijzigen.php" class="btn-outline">🔒 Wachtwoord Wijzigen</a>
-                <a href="logout.php" class="btn-danger">🚪 Uitloggen</a>
-            </div>
         </div>
     </div>
 </body>
