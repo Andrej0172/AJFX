@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS medewerker_overzicht;
+USE medewerker_overzicht;
 
 CREATE TABLE IF NOT EXISTS medewerkers (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -6,7 +8,6 @@ CREATE TABLE IF NOT EXISTS medewerkers (
     email VARCHAR(150) NOT NULL,
     afdeling VARCHAR(50) NOT NULL
 );
-
 
 INSERT INTO medewerkers (naam, functie, email, afdeling) VALUES
 ('Sophie van den Berg', 'Frontend Developer', 'sophie.vdberg@bedrijf.nl', 'IT'),
