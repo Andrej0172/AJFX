@@ -226,9 +226,7 @@ function datumLeesbaar($datum) {
         <div class="sectie-lijn"></div>
     </div>
 
-<<<<<<< HEAD
 
-=======
     <div class="lessen-grid">
 
     <?php if ($aantalLessen > 0): foreach ($rows as $row): ?>
@@ -277,7 +275,6 @@ function datumLeesbaar($datum) {
 
 </body>
 </html>
->>>>>>> DEV-Branch
 
 <?php
 // =======================
