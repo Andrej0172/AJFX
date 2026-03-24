@@ -53,7 +53,6 @@ create table lessenoverzicht
 
 INSERT INTO lessenoverzicht
 (
-<<<<<<< HEAD
     lessen
     ,trainer
     ,locatie
@@ -61,13 +60,11 @@ INSERT INTO lessenoverzicht
     ,tijd
     ,lesprijs
     
-=======
     lessen,
     trainer,
     locatie,
     datum,
     tijd
->>>>>>> DEV-Branch
 )
 VALUES 
 ('Bootcamp', 'Mike Jansen', 'Sportschool Utrecht', '2026-03-13', '09:00:00', 12.50),
