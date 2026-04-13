@@ -48,10 +48,10 @@ $lessen = [];
 if (!$simuleer_fout) {
     $conn = new mysqli($servername, $username, $password, $dbname);
     if (!$conn->connect_error) {
-        $result = $conn->query("SELECT Id, leden, lidnummer FROM ledenoverzicht ORDER BY leden ASC");
+        $result = $conn->query("SELECT Id, naam AS leden, lidnummer FROM ledenoverzicht ORDER BY naam ASC");
         if ($result) while ($row = $result->fetch_assoc()) $leden[] = $row;
 
-        $result = $conn->query("SELECT Id, lessen, datum, tijd FROM lessenoverzicht ORDER BY datum, tijd ASC");
+        $result = $conn->query("SELECT Id, lesnaam AS lessen, datum, tijd FROM lessenoverzicht ORDER BY datum, tijd ASC");
         if ($result) while ($row = $result->fetch_assoc()) $lessen[] = $row;
 
         $conn->close();
@@ -69,9 +69,9 @@ if ($simuleer_fout) {
         $sql = "
             SELECT 
                 r.Id,
-                l.leden        AS lid_naam,
+                l.naam       AS lid_naam,
                 l.lidnummer,
-                lo.lessen      AS les_naam,
+                lo.lesnaam   AS les_naam,
                 lo.trainer,
                 lo.datum,
                 lo.tijd,
