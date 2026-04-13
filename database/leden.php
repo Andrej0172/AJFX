@@ -216,7 +216,7 @@ $conn->close();
 
 </div>
 
-<!-- ── Modal: Nieuw lid toevoegen ─────────────────────────────────────────── -->
+<!--  Modal: Nieuw lid toevoegen -->
 <!-- Dit is de popup die verschijnt als je op de knop "Nieuw lid toevoegen" klikt -->
 <div class="modal fade" id="nieuwLidModal" tabindex="-1" aria-labelledby="nieuwLidModalLabel" aria-hidden="true">
     <div class="modal-dialog">
