@@ -13,10 +13,9 @@ $periode_stats  = null;
 
 $simuleer_fout = isset($_GET['fout']) && $_GET['fout'] == '1';
 
-// Datumfilter uit GET-parameters
-$filter_actief  = false;
-$startdatum     = '';
-$einddatum      = '';
+$filter_actief = false;
+$startdatum    = '';
+$einddatum     = '';
 
 if (isset($_GET['startdatum'], $_GET['einddatum']) && $_GET['startdatum'] !== '' && $_GET['einddatum'] !== '') {
     $startdatum    = $_GET['startdatum'];
@@ -66,17 +65,17 @@ $lessen = [];
 if (!$simuleer_fout) {
     $conn = new mysqli($servername, $username, $password, $dbname);
     if (!$conn->connect_error) {
-        $result = $conn->query("SELECT Id, naam AS leden, lidnummer FROM ledenoverzicht ORDER BY naam ASC");
+        $result = $conn->query("SELECT Id, naam, lidnummer FROM ledenoverzicht ORDER BY naam ASC");
         if ($result) while ($row = $result->fetch_assoc()) $leden[] = $row;
 
-        $result = $conn->query("SELECT Id, lesnaam AS lessen, datum, tijd FROM lessenoverzicht ORDER BY datum, tijd ASC");
+        $result = $conn->query("SELECT Id, lesnaam, datum, tijd FROM lessenoverzicht ORDER BY datum, tijd ASC");
         if ($result) while ($row = $result->fetch_assoc()) $lessen[] = $row;
 
         $conn->close();
     }
 }
 
-// Reserveringen ophalen (met optioneel datumfilter)
+// Reserveringen ophalen
 if ($simuleer_fout) {
     $filter_fout = "Het overzicht kon niet worden geladen.";
 } elseif ($filter_actief) {
@@ -85,7 +84,7 @@ if ($simuleer_fout) {
         $filter_fout = "Het overzicht kon niet worden geladen.";
     } else {
         $sql = "
-            SELECT 
+            SELECT
                 r.Id,
                 l.naam       AS lid_naam,
                 l.lidnummer,
@@ -95,7 +94,7 @@ if ($simuleer_fout) {
                 lo.tijd,
                 lo.locatie
             FROM reserveringen r
-            JOIN ledenoverzicht l   ON r.lid_id = l.Id
+            JOIN ledenoverzicht  l  ON r.lid_id = l.Id
             JOIN lessenoverzicht lo ON r.les_id = lo.Id
             WHERE lo.datum BETWEEN ? AND ?
             ORDER BY lo.datum, lo.tijd
@@ -107,18 +106,12 @@ if ($simuleer_fout) {
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) $reserveringen[] = $row;
             }
-
-            // Uitsplitsing per dag berekenen
             $per_dag = [];
             foreach ($reserveringen as $r) {
                 $per_dag[$r['datum']] = ($per_dag[$r['datum']] ?? 0) + 1;
             }
             ksort($per_dag);
-
-            $periode_stats = [
-                'totaal'  => count($reserveringen),
-                'per_dag' => $per_dag,
-            ];
+            $periode_stats = ['totaal' => count($reserveringen), 'per_dag' => $per_dag];
         } else {
             $filter_fout = "Het overzicht kon niet worden geladen.";
         }
@@ -126,13 +119,12 @@ if ($simuleer_fout) {
         $conn->close();
     }
 } else {
-    // Geen filter: alle reserveringen tonen
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
         $fout = "Er is iets misgegaan bij het laden van de reserveringen.";
     } else {
         $sql = "
-            SELECT 
+            SELECT
                 r.Id,
                 l.naam       AS lid_naam,
                 l.lidnummer,
@@ -142,7 +134,7 @@ if ($simuleer_fout) {
                 lo.tijd,
                 lo.locatie
             FROM reserveringen r
-            JOIN ledenoverzicht l   ON r.lid_id = l.Id
+            JOIN ledenoverzicht  l  ON r.lid_id = l.Id
             JOIN lessenoverzicht lo ON r.les_id = lo.Id
             ORDER BY lo.datum, lo.tijd
         ";
@@ -172,25 +164,27 @@ function formatDatum(string $datum): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservering Overzicht</title>
     <link rel="stylesheet" href="reserveringsoverzicht.css">
+    <link rel="stylesheet" href="../homepage/styles.css">
 </head>
 <body>
 
-<header>
-    <div class="header-inner">
-        <div>
-            <p class="header-label">Beheer</p>
-            <h1 class="header-titel">Reserveringen</h1>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-text">AJFX</span>
         </div>
-        <div class="header-acties">
-            <?php if ($simuleer_fout): ?>
-                <a href="reserveringsoverzicht.php" class="knop-secundair">✓ Normaal</a>
-            <?php else: ?>
-                <a href="reserveringsoverzicht.php?fout=1" class="knop-secundair">⚠ Fout aan</a>
-            <?php endif; ?>
-            <button class="knop-primair" onclick="toggleFormulier()">+ Nieuwe reservering</button>
-        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="../index.html" class="nav-link active">Home</a></li>
+            <li><a href="../lessen-overzicht.php" class="nav-link">Lessen</a></li>
+            <li><a href="../reservering_overzicht/reserveringsoverzicht.php" class="nav-link">Reserveringen</a></li>
+            <li><a href="../account/login.php" class="nav-link">Account</a></li>
+            <li><a href="../medewerker_overzicht/medewerkers.php" class="nav-link">Medewerker overzicht</a></li>
+        </ul>
     </div>
-</header>
+</nav>
 
 <main>
 
@@ -225,7 +219,7 @@ function formatDatum(string $datum): string {
                     <option value="">— Selecteer een lid —</option>
                     <?php foreach ($leden as $lid): ?>
                         <option value="<?= (int)$lid['Id'] ?>" <?= ($_POST['lid_id'] ?? '') == $lid['Id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($lid['leden']) ?> (<?= htmlspecialchars($lid['lidnummer']) ?>)
+                            <?= htmlspecialchars($lid['naam']) ?> (<?= htmlspecialchars($lid['lidnummer']) ?>)
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -236,7 +230,7 @@ function formatDatum(string $datum): string {
                     <option value="">— Selecteer een les —</option>
                     <?php foreach ($lessen as $les): ?>
                         <option value="<?= (int)$les['Id'] ?>" <?= ($_POST['les_id'] ?? '') == $les['Id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($les['lessen']) ?> — <?= htmlspecialchars($les['datum']) ?> <?= htmlspecialchars($les['tijd']) ?>
+                            <?= htmlspecialchars($les['lesnaam']) ?> — <?= htmlspecialchars($les['datum']) ?> <?= htmlspecialchars($les['tijd']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -269,7 +263,7 @@ function formatDatum(string $datum): string {
         </form>
     </div>
 
-    <!-- Periode statistieken (scenario 1) -->
+    <!-- Periode statistieken -->
     <?php if ($filter_actief && $filter_fout): ?>
         <div class="fout-blok">
             <div class="fout-icoon">!</div>
@@ -313,6 +307,7 @@ function formatDatum(string $datum): string {
         <div class="fout-blok">
             <div class="fout-icoon">!</div>
             <p class="fout-tekst"><?= htmlspecialchars($fout) ?></p>
+        </div>
 
     <?php elseif (!$filter_actief && empty($reserveringen)): ?>
         <p class="aantal-tekst">Geen reserveringen gevonden.</p>
