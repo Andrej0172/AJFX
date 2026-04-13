@@ -280,7 +280,7 @@ $conn->close();
                                required>
                     </div>
 
-                    <!-- Lidnummer wordt automatisch ingevuld door de database (AUTO_INCREMENT) -->
+                    <!-- Lidnummer wordt automatisch ingevuld door de database -->
                     <!-- Daarom staat er geen veld voor lidnummer in dit formulier -->
 
                 </div>
