@@ -8,8 +8,21 @@ $reserveringen  = [];
 $fout           = null;
 $succes         = null;
 $formulier_fout = null;
+$filter_fout    = null;
+$periode_stats  = null;
 
 $simuleer_fout = isset($_GET['fout']) && $_GET['fout'] == '1';
+
+// Datumfilter uit GET-parameters
+$filter_actief  = false;
+$startdatum     = '';
+$einddatum      = '';
+
+if (isset($_GET['startdatum'], $_GET['einddatum']) && $_GET['startdatum'] !== '' && $_GET['einddatum'] !== '') {
+    $startdatum    = $_GET['startdatum'];
+    $einddatum     = $_GET['einddatum'];
+    $filter_actief = true;
+}
 
 // Reservering toevoegen via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,7 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $conn->prepare("INSERT INTO reserveringen (lid_id, les_id) VALUES (?, ?)");
             $stmt->bind_param("ii", $lid_id, $les_id);
             if ($stmt->execute()) {
-                header("Location: reserveringsoverzicht.php?succes=1");
+                $qs = http_build_query(array_filter([
+                    'succes'     => '1',
+                    'startdatum' => $startdatum,
+                    'einddatum'  => $einddatum,
+                ]));
+                header("Location: reserveringsoverzicht.php?" . $qs);
                 exit;
             } else {
                 $formulier_fout = "Technische storing, reservering is mogelijk niet opgeslagen.";
@@ -58,10 +76,57 @@ if (!$simuleer_fout) {
     }
 }
 
-// Reserveringen ophalen
+// Reserveringen ophalen (met optioneel datumfilter)
 if ($simuleer_fout) {
-    $fout = "Er is iets misgegaan bij het laden van de reserveringen.";
+    $filter_fout = "Het overzicht kon niet worden geladen.";
+} elseif ($filter_actief) {
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        $filter_fout = "Het overzicht kon niet worden geladen.";
+    } else {
+        $sql = "
+            SELECT 
+                r.Id,
+                l.naam       AS lid_naam,
+                l.lidnummer,
+                lo.lesnaam   AS les_naam,
+                lo.trainer,
+                lo.datum,
+                lo.tijd,
+                lo.locatie
+            FROM reserveringen r
+            JOIN ledenoverzicht l   ON r.lid_id = l.Id
+            JOIN lessenoverzicht lo ON r.les_id = lo.Id
+            WHERE lo.datum BETWEEN ? AND ?
+            ORDER BY lo.datum, lo.tijd
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $startdatum, $einddatum);
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) $reserveringen[] = $row;
+            }
+
+            // Uitsplitsing per dag berekenen
+            $per_dag = [];
+            foreach ($reserveringen as $r) {
+                $per_dag[$r['datum']] = ($per_dag[$r['datum']] ?? 0) + 1;
+            }
+            ksort($per_dag);
+
+            $periode_stats = [
+                'totaal'  => count($reserveringen),
+                'per_dag' => $per_dag,
+            ];
+        } else {
+            $filter_fout = "Het overzicht kon niet worden geladen.";
+        }
+        $stmt->close();
+        $conn->close();
+    }
 } else {
+    // Geen filter: alle reserveringen tonen
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
         $fout = "Er is iets misgegaan bij het laden van de reserveringen.";
@@ -81,12 +146,9 @@ if ($simuleer_fout) {
             JOIN lessenoverzicht lo ON r.les_id = lo.Id
             ORDER BY lo.datum, lo.tijd
         ";
-
         $result = $conn->query($sql);
         if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $reserveringen[] = $row;
-            }
+            while ($row = $result->fetch_assoc()) $reserveringen[] = $row;
         }
         $conn->close();
     }
@@ -97,6 +159,10 @@ function initialen(string $naam): string {
     $eerste  = strtoupper(substr($delen[0], 0, 1));
     $laatste = strtoupper(substr(end($delen), 0, 1));
     return $eerste . $laatste;
+}
+
+function formatDatum(string $datum): string {
+    return date('d-m-Y', strtotime($datum));
 }
 ?>
 <!DOCTYPE html>
@@ -135,7 +201,7 @@ function initialen(string $naam): string {
         </div>
     <?php endif; ?>
 
-    <!-- Formulier -->
+    <!-- Nieuw reserveringsformulier -->
     <div id="formulier-sectie" style="display: <?= $formulier_fout ? 'block' : 'none' ?>;">
         <h2 class="sectie-titel">Nieuwe reservering</h2>
 
@@ -147,6 +213,12 @@ function initialen(string $naam): string {
         <?php endif; ?>
 
         <form method="POST" action="reserveringsoverzicht.php">
+            <?php if ($startdatum): ?>
+                <input type="hidden" name="startdatum" value="<?= htmlspecialchars($startdatum) ?>">
+            <?php endif; ?>
+            <?php if ($einddatum): ?>
+                <input type="hidden" name="einddatum" value="<?= htmlspecialchars($einddatum) ?>">
+            <?php endif; ?>
             <div class="form-groep">
                 <label>Lid *</label>
                 <select name="lid_id">
@@ -176,18 +248,77 @@ function initialen(string $naam): string {
         </form>
     </div>
 
-    <!-- Overzicht -->
-    <?php if ($fout): ?>
+    <!-- Periodefilter -->
+    <div class="filter-sectie">
+        <h2 class="sectie-titel">Overzicht per periode</h2>
+        <form method="GET" action="reserveringsoverzicht.php" class="filter-form">
+            <div class="form-groep">
+                <label for="startdatum">Startdatum</label>
+                <input type="date" id="startdatum" name="startdatum" value="<?= htmlspecialchars($startdatum) ?>" required>
+            </div>
+            <div class="form-groep">
+                <label for="einddatum">Einddatum</label>
+                <input type="date" id="einddatum" name="einddatum" value="<?= htmlspecialchars($einddatum) ?>" required>
+            </div>
+            <div class="form-acties">
+                <button type="submit" class="knop-primair">Toon overzicht</button>
+                <?php if ($filter_actief): ?>
+                    <a href="reserveringsoverzicht.php" class="knop-secundair">Wis filter</a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+
+    <!-- Periode statistieken (scenario 1) -->
+    <?php if ($filter_actief && $filter_fout): ?>
+        <div class="fout-blok">
+            <div class="fout-icoon">!</div>
+            <p class="fout-tekst"><?= htmlspecialchars($filter_fout) ?></p>
+        </div>
+
+    <?php elseif ($filter_actief && $periode_stats !== null): ?>
+        <div class="periode-stats">
+            <div class="stat-kaart">
+                <p class="stat-label">Totaal reserveringen</p>
+                <p class="stat-waarde"><?= $periode_stats['totaal'] ?></p>
+                <p class="stat-sub"><?= htmlspecialchars(formatDatum($startdatum)) ?> – <?= htmlspecialchars(formatDatum($einddatum)) ?></p>
+            </div>
+
+            <?php if (!empty($periode_stats['per_dag'])): ?>
+                <div class="uitsplitsing">
+                    <h3 class="sectie-titel">Uitsplitsing per dag</h3>
+                    <div class="dag-rijen">
+                        <?php foreach ($periode_stats['per_dag'] as $dag => $aantal): ?>
+                            <div class="dag-rij">
+                                <span class="dag-datum"><?= htmlspecialchars(formatDatum($dag)) ?></span>
+                                <div class="dag-balk-wrapper">
+                                    <div class="dag-balk" style="width: <?= min(100, ($aantal / max($periode_stats['per_dag'])) * 100) ?>%"></div>
+                                </div>
+                                <span class="dag-aantal"><?= $aantal ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <?php if (empty($reserveringen)): ?>
+            <p class="aantal-tekst">Geen reserveringen gevonden voor deze periode.</p>
+        <?php endif; ?>
+
+    <?php endif; ?>
+
+    <!-- Overzichtstabel -->
+    <?php if (!$filter_actief && $fout): ?>
         <div class="fout-blok">
             <div class="fout-icoon">!</div>
             <p class="fout-tekst"><?= htmlspecialchars($fout) ?></p>
-        </div>
 
-    <?php elseif (empty($reserveringen)): ?>
+    <?php elseif (!$filter_actief && empty($reserveringen)): ?>
         <p class="aantal-tekst">Geen reserveringen gevonden.</p>
 
-    <?php else: ?>
-        <p class="aantal-tekst"><?= count($reserveringen) ?> reserveringen</p>
+    <?php elseif (!empty($reserveringen)): ?>
+        <p class="aantal-tekst"><?= count($reserveringen) ?> reserveringen<?= $filter_actief ? ' in geselecteerde periode' : '' ?></p>
 
         <div class="tabel-wrapper">
             <table>
@@ -214,8 +345,8 @@ function initialen(string $naam): string {
                             <td><span class="badge"><?= htmlspecialchars($r['lidnummer']) ?></span></td>
                             <td><?= htmlspecialchars($r['les_naam']) ?></td>
                             <td><?= htmlspecialchars($r['trainer']) ?></td>
-                            <td><?= htmlspecialchars($r['datum']) ?></td>
-                            <td><?= htmlspecialchars($r['tijd']) ?></td>
+                            <td><?= htmlspecialchars(formatDatum($r['datum'])) ?></td>
+                            <td><?= htmlspecialchars(substr($r['tijd'], 0, 5)) ?></td>
                             <td><?= htmlspecialchars($r['locatie']) ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -224,6 +355,7 @@ function initialen(string $naam): string {
         </div>
 
     <?php endif; ?>
+
 </main>
 
 <script>
