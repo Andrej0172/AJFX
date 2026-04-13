@@ -279,7 +279,8 @@ $conn->close();
 
 </div>
 
-<!-- ── Modal: Nieuw lid toevoegen ─────────────────────────────────────────── -->
+<!--  Modal: Nieuw lid toevoegen -->
+<!-- Dit is de popup die verschijnt als je op de knop "Nieuw lid toevoegen" klikt -->
 <div class="modal fade" id="nieuwLidModal" tabindex="-1" aria-labelledby="nieuwLidModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -336,26 +337,8 @@ $conn->close();
                         Vul alle verplichte velden correct in.
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Naam <span class="text-danger">*</span></label>
-                        <input type="text" name="leden" id="wijzig_leden" class="form-control" placeholder="Voor- en achternaam" required>
-                        <div class="invalid-feedback">Naam is verplicht.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Les <span class="text-danger">*</span></label>
-                        <input type="text" name="lessen" id="wijzig_lessen" class="form-control" placeholder="Bijv. Yoga, Zwemmen..." required>
-                        <div class="invalid-feedback">Les is verplicht.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Leeftijd <span class="text-danger">*</span></label>
-                        <input type="number" name="leeftijd" id="wijzig_leeftijd" class="form-control" placeholder="Leeftijd" min="1" max="120" required>
-                        <div class="invalid-feedback">Voer een geldige leeftijd in (1–120).</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">E-mailadres <span class="text-danger">*</span></label>
-                        <input type="email" name="email" id="wijzig_email" class="form-control" placeholder="naam@voorbeeld.nl" required>
-                        <div class="invalid-feedback">Voer een geldig e-mailadres in.</div>
-                    </div>
+                    <!-- Lidnummer wordt automatisch ingevuld door de database -->
+                    <!-- Daarom staat er geen veld voor lidnummer in dit formulier -->
 
                 </div>
                 <div class="modal-footer">
