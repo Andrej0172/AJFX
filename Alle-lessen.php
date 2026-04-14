@@ -11,6 +11,7 @@ if ($conn->connect_error) {
 }
 
 // inputs ophalen
+$datum = $_GET['datum'] ?? "";
 $zoek = $_GET['zoek'] ?? "";
 $min = $_GET['min'] ?? "";
 $max = $_GET['max'] ?? "";
@@ -18,12 +19,16 @@ $max = $_GET['max'] ?? "";
 
 $sql = "SELECT * FROM lessenoverzicht WHERE 1=1";
 
+// datum filter
+if ($datum != "") {
+    $sql .= " AND datum = '$datum'";
+}
+
 // zoekfunctie
 if ($zoek != "") {
     $sql .= " AND (lessen LIKE '%$zoek%' 
                 OR trainer LIKE '%$zoek%' 
-                OR locatie LIKE '%$zoek%'
-                OR datum LIKE '%$zoek%')";
+                OR locatie LIKE '%$zoek%')";
 }
 
 // prijsfilter
@@ -56,9 +61,11 @@ $result = $conn->query($sql);
     </a>
 </div>
 
-<!--  ZOEK + PRIJS FILTER -->
+<!--  DATUM + ZOEK + PRIJS FILTER -->
 <form method="GET">
-    <input type="text" name="zoek" placeholder="Zoek les / trainer / datum" value="<?= $zoek ?>">
+    <input type="date" name="datum" value="<?= $datum ?>">
+
+    <input type="text" name="zoek" placeholder="Zoek les / trainer" value="<?= $zoek ?>">
 
     <input type="number" step="1" name="min" placeholder="Min prijs" value="<?= $min ?>">
     <input type="number" step="1" name="max" placeholder="Max prijs" value="<?= $max ?>">
