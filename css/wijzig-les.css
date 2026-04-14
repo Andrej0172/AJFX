@@ -1,12 +1,10 @@
-/* Algemene pagina styling */
+/* Algemene styling */
 body {
     font-family: Arial, sans-serif;
     background: #f5f6f8;
     margin: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;  /* horizontaal centreren */
-    align-items: center;      /* verticaal centreren */
+    padding: 20px;
+    color: #333;
 }
 
 /* Terug knop */
@@ -18,22 +16,21 @@ a button {
     background: #2d6cdf;
     color: white;
     font-size: 14px;
-    margin-bottom: 10px;
 }
 
-/* Titel */
+/* Container */
 h2 {
-    text-align: center;
-    margin-bottom: 15px;
+    margin-top: 20px;
 }
 
-/* Form container */
+/* Formulier */
 form {
     background: white;
-    padding: 25px;
+    padding: 20px;
     border-radius: 10px;
-    width: 400px;
+    max-width: 500px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 15px;
 }
 
 /* Labels */
@@ -66,7 +63,7 @@ button[type="submit"] {
     font-size: 15px;
 }
 
-/* Fout / tekst */
+/* Les niet gevonden */
 p {
-    text-align: center;
+    margin-top: 20px;
 }
