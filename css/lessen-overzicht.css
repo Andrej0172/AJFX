@@ -116,3 +116,75 @@ table td a:last-child button {
     font-size: 40px;
     margin-bottom: 10px;
 }
+
+
+/* Responsive voor tablets en telefoons */
+@media (max-width: 768px) {
+
+    /* Zoekbalk onder elkaar zetten */
+    .zoek-wrapper form {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    /* Zoek input 100% breed */
+    .zoek-input {
+        width: 100%;
+    }
+
+    /* Zoek knop 100% breed */
+    .zoek-wrapper button {
+        width: 100%;
+    }
+
+    /* Nieuwe les knop 100% breed */
+    div a button {
+        width: 100%;
+    }
+
+    /* Tabel kleiner maken */
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}
+
+/* Extra kleine schermen (telefoon) */
+@media (max-width: 480px) {
+
+    /* Zoekbalk styling op mobiel */
+    .zoek-wrapper form {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    /* Kleinere input tekst */
+    .zoek-input {
+        font-size: 14px;
+    }
+
+    /* Tabel blijft scrollbaar */
+    table {
+        min-width: 600px;
+    }
+
+    /* Geen tekst afbreken in tabel */
+    th, td {
+        white-space: nowrap;
+    }
+
+    /* Knoppen onder elkaar */
+    table button {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    /* Minder padding op mobiel */
+    main.main {
+        padding: 10px;
+    }
+}
