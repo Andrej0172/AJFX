@@ -11,12 +11,18 @@ if ($conn->connect_error) {
 }
 
 // inputs ophalen
+$datum = $_GET['datum'] ?? "";
 $zoek = $_GET['zoek'] ?? "";
 $min = $_GET['min'] ?? "";
 $max = $_GET['max'] ?? "";
 
 
 $sql = "SELECT * FROM lessenoverzicht WHERE 1=1";
+
+// datum filter
+if ($datum != "") {
+    $sql .= " AND datum = '$datum'";
+}
 
 // zoekfunctie
 if ($zoek != "") {
@@ -55,8 +61,10 @@ $result = $conn->query($sql);
     </a>
 </div>
 
-<!--  ZOEK + PRIJS FILTER -->
+<!--  DATUM + ZOEK + PRIJS FILTER -->
 <form method="GET">
+    <input type="date" name="datum" value="<?= $datum ?>">
+
     <input type="text" name="zoek" placeholder="Zoek les / trainer" value="<?= $zoek ?>">
 
     <input type="number" step="1" name="min" placeholder="Min prijs" value="<?= $min ?>">
@@ -82,7 +90,7 @@ if ($result && $result->num_rows > 0) {
     }
 
 } else {
-    echo "<p>Geen lessen gevonden</p>";
+    echo "<p>Vul de juiste gegevens in</p>";
 }
 ?>
 
