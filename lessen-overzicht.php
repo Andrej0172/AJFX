@@ -114,7 +114,6 @@ function datumLeesbaar($datum) {
     </div>
 </nav>
 
-<h2>qq</h2>
 
 <!-- =======================
      ZOEKBALK
@@ -218,51 +217,7 @@ function datumLeesbaar($datum) {
         </table>
     </div>
 
-    <!-- =======================
-         KAARTEN (ALLE LESSEN)
-    ======================= -->
-    <div class="sectie-header">
-        <h2>Alle lessen</h2>
-        <div class="sectie-lijn"></div>
-    </div>
-
-
-    <div class="lessen-grid">
-
-    <?php if ($aantalLessen > 0): foreach ($rows as $row): ?>
-        <div class="les-card">
-            <div class="les-card-top"></div>
-
-            <div class="les-card-body">
-                <div class="les-card-titel">
-                    <?= htmlspecialchars($row['lessen']) ?>
-                </div>
-
-                <div class="les-card-meta">
-
-                    <div class="les-card-meta-item">
-                        <div class="icon">📅</div>
-                        <span><?= datumLeesbaar($row['datum']) ?></span>
-                    </div>
-
-                    <div class="les-card-meta-item">
-                        <div class="icon">⏱</div>
-                        <span><?= htmlspecialchars(substr($row['tijd'], 0, 5)) ?></span>
-                    </div>
-
-                    <div class="les-card-meta-item">
-                        <div class="icon">📍</div>
-                        <span><?= htmlspecialchars($row['locatie']) ?></span>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="les-card-trainer">
-                <div class="avatar"><?= initialen($row['trainer']) ?></div>
-                <strong><?= htmlspecialchars($row['trainer']) ?></strong>
-            </div>
-        </div>
+    
 
     <?php endforeach; else: ?>
         <p>Geen lessen beschikbaar</p>

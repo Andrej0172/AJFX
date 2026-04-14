@@ -90,7 +90,7 @@ if ($result && $result->num_rows > 0) {
     }
 
 } else {
-    echo "<p>Geen lessen gevonden</p>";
+    echo "<p>Vul de juiste gegevens in</p>";
 }
 ?>
 
