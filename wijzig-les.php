@@ -1,96 +1,88 @@
+<?php
+// Database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "lessen";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Database fout");
+}
+
+// veilig ophalen
+$les = $_GET['les'] ?? '';
+$datum = $_GET['datum'] ?? '';
+$tijd = $_GET['tijd'] ?? '';
+
+$dbFout = false;
+
+// query
+$sql = "SELECT * FROM lessenoverzicht 
+        WHERE lessen = '$les'
+        AND datum = '$datum'
+        AND tijd = '$tijd'";
+
+$result = $conn->query($sql);
+
+if (!$result) {
+    $dbFout = true;
+}
+
+$row = $result ? $result->fetch_assoc() : null;
+?>
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lessen Overzicht</title>
-
-    <link rel="stylesheet" href="../css/lessen-overzicht.css">
-    <link rel="stylesheet" href="../css/css/lessss.css">
-    <link href="../homepage/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/wijzig-les.css">
+    <title>Les wijzigen</title>
 </head>
 <body>
 
-<?php include 'header.html'; ?>
-
-<!-- Nieuwe les -->
-<div style="margin:20px 0;">
-    <a href="insert-les.php">
-        <button>+ Nieuwe les toevoegen</button>
+<!-- TERUG KNOP -->
+<p>
+    <a href="lessen-overzicht.php">
+        <button>← Terug</button>
     </a>
-</div>
+</p>
 
-<!-- Zoekbalk -->
-<div class="zoek-wrapper">
-    <form method="GET">
-        <input type="text" name="zoek" value="<?= htmlspecialchars($zoek) ?>" placeholder="Zoek...">
-        <button type="submit">Zoeken</button>
-    </form>
-</div>
+<?php if ($dbFout || !$row): ?>
 
-<main class="main">
-
-<?php if ($dbFout): ?>
-
-    <p>Er is een fout opgetreden</p>
+    <p>Les niet gevonden</p>
 
 <?php else: ?>
 
-<?php
-$rows = [];
-while ($row = $result->fetch_assoc()) {
-    $rows[] = $row;
-}
-?>
+    <h2>Les wijzigen</h2>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Les</th>
-            <th>Trainer</th>
-            <th>Locatie</th>
-            <th>Datum</th>
-            <th>Tijd</th>
-            <th>Actie</th>
-        </tr>
-    </thead>
+    <form method="POST" action="update-les.php">
 
-    <tbody>
+        <input type="hidden" name="oude_les" value="<?= htmlspecialchars($les) ?>">
+        <input type="hidden" name="oude_datum" value="<?= htmlspecialchars($datum) ?>">
+        <input type="hidden" name="oude_tijd" value="<?= htmlspecialchars($tijd) ?>">
 
-    <?php foreach ($rows as $row): ?>
-        <tr>
-            <td><?= htmlspecialchars($row['lessen']) ?></td>
-            <td><?= htmlspecialchars($row['trainer']) ?></td>
-            <td><?= htmlspecialchars($row['locatie']) ?></td>
-            <td><?= datumLeesbaar($row['datum']) ?></td>
-            <td><?= substr($row['tijd'], 0, 5) ?></td>
+        <label>Les</label>
+        <input type="text" name="lessen" value="<?= htmlspecialchars($row['lessen']) ?>">
 
-            <!-- ACTIE BLOK -->
-            <td>
+        <label>Trainer</label>
+        <input type="text" name="trainer" value="<?= htmlspecialchars($row['trainer']) ?>">
 
-                <!-- Wijzigen -->
-                <a href="wijzig-les.php?les=<?= urlencode($row['lessen']) ?>&datum=<?= $row['datum'] ?>&tijd=<?= $row['tijd'] ?>">
-                    <button>Wijzigen</button>
-                </a>
+        <label>Locatie</label>
+        <input type="text" name="locatie" value="<?= htmlspecialchars($row['locatie']) ?>">
 
-                <!-- ======================= -->
-                <!-- ANNULEREN BLOK -->
-                <!-- ======================= -->
-                <a href="annuleer-les.php?les=<?= urlencode($row['lessen']) ?>&datum=<?= $row['datum'] ?>&tijd=<?= $row['tijd'] ?>"
-                   onclick="return confirm('Weet je zeker dat je deze les wilt annuleren?');">
-                    <button style="background:red;color:white;">Annuleren</button>
-                </a>
+        <label>Datum</label>
+        <input type="date" name="datum" value="<?= $row['datum'] ?>">
 
-            </td>
-        </tr>
-    <?php endforeach; ?>
+        <label>Tijd</label>
+        <input type="time" name="tijd" value="<?= $row['tijd'] ?>">
 
-    </tbody>
-</table>
+        <button type="submit">Opslaan</button>
+
+    </form>
 
 <?php endif; ?>
-
-</main>
 
 </body>
 </html>
