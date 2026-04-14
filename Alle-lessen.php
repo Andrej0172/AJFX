@@ -22,7 +22,8 @@ $sql = "SELECT * FROM lessenoverzicht WHERE 1=1";
 if ($zoek != "") {
     $sql .= " AND (lessen LIKE '%$zoek%' 
                 OR trainer LIKE '%$zoek%' 
-                OR locatie LIKE '%$zoek%')";
+                OR locatie LIKE '%$zoek%'
+                OR datum LIKE '%$zoek%')";
 }
 
 // prijsfilter
@@ -57,7 +58,7 @@ $result = $conn->query($sql);
 
 <!--  ZOEK + PRIJS FILTER -->
 <form method="GET">
-    <input type="text" name="zoek" placeholder="Zoek les / trainer" value="<?= $zoek ?>">
+    <input type="text" name="zoek" placeholder="Zoek les / trainer / datum" value="<?= $zoek ?>">
 
     <input type="number" step="1" name="min" placeholder="Min prijs" value="<?= $min ?>">
     <input type="number" step="1" name="max" placeholder="Max prijs" value="<?= $max ?>">
